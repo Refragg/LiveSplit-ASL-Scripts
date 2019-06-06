@@ -1,4 +1,4 @@
-/*I have a very basic knowledge about C# and ASL in general so this splitter is pretty basic and probably shouldn't be taken as an exemple*/
+/*I have a very basic knowledge about C# and ASL in general so this splitter is pretty basic and probably shouldn't be taken as an example.*/
 
 state("srb2win", "2.1.23 - 64 bits")
 {
@@ -42,7 +42,7 @@ init
 {
 	if (modules.First().ModuleMemorySize == 21336064) version = "2.1.23 - 32 bits";
 	if (modules.First().ModuleMemorySize == 21745664) version = "2.1.23 - 64 bits";
-	
+
 	else if(version == "")
 	{
 		var result = MessageBox.Show(timer.Form,
@@ -52,7 +52,7 @@ init
 		+ "\nClick Yes to open the game update page.",
 		"SRB2 Livesplit Script",
 		MessageBoxButtons.YesNo,
-		MessageBoxIcon.Information);	
+		MessageBoxIcon.Information);
 		if (result == DialogResult.Yes)
 		{
 			Process.Start("https://www.srb2.org/download");
@@ -98,7 +98,7 @@ start
 }
 
 update
-{	
+{
 	//print("Executable size is : " + modules.First().ModuleMemorySize);
 	int timeToAdd = Math.Max(0, current.framecounter-old.framecounter);
 	if(current.framecounter-old.framecounter < 15)

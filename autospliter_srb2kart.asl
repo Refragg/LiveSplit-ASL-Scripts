@@ -1,5 +1,5 @@
-/* SRB2Kart works aproximately the same as SRB2 although it's an other executable so some things comes from SRB2's splitter
-I have a very basic knowledge about C# and ASL in general so this splitter is pretty basic and probably shouldn't be taken as an exemple*/
+/* SRB2Kart works approximately the same as SRB2 although it's an other executable so some things comes from SRB2's splitter.
+I have a very basic knowledge about C# and ASL in general so this splitter is pretty basic and probably shouldn't be taken as an example.*/
 
 state("srb2kart", "1.1 - 32 bits")
 {
@@ -63,7 +63,7 @@ init
 		+ "\nClick Yes to open the game update page.",
 		"SRB2Kart Livesplit Script",
 		MessageBoxButtons.YesNo,
-		MessageBoxIcon.Information);	
+		MessageBoxIcon.Information);
 		if (result == DialogResult.Yes)
 		{
 			Process.Start("https://mb.srb2.org/forumdisplay.php?f=115");
