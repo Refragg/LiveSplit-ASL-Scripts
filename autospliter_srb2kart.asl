@@ -77,9 +77,6 @@ startup
 {
 	vars.totalTime = 0;
 	settings.Add("split", false, "Split every lap");
-	settings.Add("reset_l", false, "Reset 1st level");
-	settings.Add("IGT", true, "IGT");
-	settings.SetToolTip("reset_l","Reset when going into the 1st level");
 }
 
 start
@@ -94,7 +91,6 @@ start
 update
 {
 	//print("Executable size is : " + modules.First().ModuleMemorySize);
-	
 	int timeToAdd = Math.Max(0, current.frameCounter_track-old.frameCounter_track);
 	if(current.frameCounter_track-old.frameCounter_track < 35)
 	{
@@ -116,7 +112,7 @@ split
 
 reset
 {
-	if(settings["reset_l"] && current.level == 1 && current.start_RA == 1 && current.start_RA != old.start_RA)
+	if(current.level == 1 && current.start_RA == 1 && current.start_RA != old.start_RA)
 	{
 		return true;
 	}
@@ -124,14 +120,7 @@ reset
 
 gameTime
 {
-	if(settings["IGT"])
-	{
-		return TimeSpan.FromMilliseconds(vars.totalTime*28.5714285714);
-	}
-	else
-	{
-		return TimeSpan.FromMilliseconds(0);
-	}
+	return TimeSpan.FromMilliseconds(vars.totalTime*28.5714285714);
 }
 
 isLoading

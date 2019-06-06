@@ -74,15 +74,12 @@ startup
 	settings.Add("emerald", false, "Split on emeralds");
 	settings.Add("emblem", false, "Split on emblems (hover here please)");
 	settings.Add("TA_S", true, "Start on Record Attack");
-	settings.Add ("IGT", false, "IGT");
-	settings.Add("reset", false, "Reset when going back to menu");
 	settings.Add("temple", false, "(Mystic Realm) Temple split");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
 	settings.SetToolTip("a_clear","Splits when the act clear screen appears");
 	settings.SetToolTip("s_b_clear", "Splits when your bonuses got added to the total");
 	settings.SetToolTip("loading","Splits when the transition to the next level begins");
 	settings.SetToolTip("emblem","Splits on hidden emblems, not on the record attack ones. At every restart of the game, you'll need to take one first emblem then it'll start to split");
-	settings.SetToolTip("reset","Don't forget to also tick the 'Reset' option next to 'Split'");
 	settings.SetToolTip("temple","Splits when activating a temple");
 }
 
@@ -167,7 +164,7 @@ split
 
 reset
 {
-	if(settings["reset"] && current.reset == 0 && current.reset != old.reset)
+	if(current.reset == 0 && current.reset != old.reset)
 	{
 		return true;
 	}
@@ -179,14 +176,7 @@ reset
 
 gameTime
 {
-	if(settings ["IGT"])
-	{
-		return TimeSpan.FromMilliseconds(vars.totalTime*28.5714285714);
-	}
-	else
-	{
-		return TimeSpan.FromMilliseconds(0);
-	}
+	return TimeSpan.FromMilliseconds(vars.totalTime*28.5714285714);
 }
 
 isLoading
