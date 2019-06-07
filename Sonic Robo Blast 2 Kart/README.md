@@ -9,6 +9,6 @@ Feel free to leave any suggestion to improve this script!
 ## Functions :
 
 - **Start**
-- **Split : **at end of track (and as an option on every lap)
+- **Split :** at end of track (and as an option on every lap)
 - **Reset** when choosing the first track ( /!\ on by default (I don't think I can change that))
 - **IGT**

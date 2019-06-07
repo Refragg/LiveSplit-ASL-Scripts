@@ -10,6 +10,6 @@ Note : Mystic Realm currently uses this autosplitter because I thought it was us
 ## Functions :
 
 - **Start** (with a choice to start on RA mode)
-- **Split : **at end of level, when taking collectibles, when activating a Temple in Mystic Realm
+- **Split :** at end of level, when taking collectibles, when activating a Temple in Mystic Realm
 - **Reset** ( /!\ on by default (I don't think I can change that))
 - **IGT**
