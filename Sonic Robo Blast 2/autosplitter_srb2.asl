@@ -1,54 +1,52 @@
 /*I have a very basic knowledge about C# and ASL in general so this splitter is pretty basic and probably shouldn't be taken as an example.*/
 
-state("srb2win", "2.1.23 - 64 bits")
+state("srb2win", "2.1.24 - 64 bits")
 {
-	int start : 0x13A23E8;
-	int split : 0x3546E4;
-	int level : 0x1B2B84;
-	int framecounter : 0x1399070;
-	int pause : 0x355330;
-	int TBonus : 0x354770;
-	int RBonus : 0x354784;
-	int LBonus : 0x354790;
-	int a_c_countdown : 0x1399050;
-	int TA : 0x347AB4;
-	int reset : 0x316D60;
-	int emblem : 0x21C044;
-	int emerald : 0x13984AC;
-	string3 scr_id : 0x347AE0;
-	byte scr_temple : 0x34844C;
+	int start : 0x13DFDE8;
+	int split : 0x3882A0;
+	int level : 0x1BEBE4;
+	int framecounter : 0x13D2870;
+	int a_c_countdown : 0x13D2850;
+	int TBonus : 0x388330;
+	int RBonus : 0x388344;
+	int LBonus : 0x388350;
+	int TA : 0x37B674;
+	int reset : 0x345EF0;
+	int emblem : 0x23E3E4;
+	int emerald : 0x13D1CAC;
+	string3 scr_id : 0x37B6A0;
+	byte scr_temple : 0x387D84;
 }
 
-state("srb2win", "2.1.23 - 32 bits")
+state("srb2win", "2.1.24 - 32 bits")
 {
-	int start : 0x1355D4C;
-	int split : 0x30E4A0;
-	int level : 0x1A8F3C;
-	int framecounter : 0x134EAEC;
-	int pause : 0x30EE30;
-	int TBonus : 0x30E530;
-	int RBonus : 0x30E544;
-	int LBonus : 0x30E550;
-	int a_c_countdown : 0x134EACC;
-	int TA : 0x3022A8;
-	int reset : 0x2D6C00;
-	int emblem : 0x201828;
-	int emerald : 0x134E480;
-	string3 scr_id : 0x3022E0;
-	byte scr_temple : 0x3029EC;
+	int start : 0x13B04AC;
+	int split : 0x35FC40;
+	int level : 0x1B3F7C;
+	int framecounter : 0x13A530C;
+	int a_c_countdown : 0x13A52EC;
+	int TBonus : 0x35FCD0;
+	int RBonus : 0x35FCE4;
+	int LBonus : 0x35FCF0;
+	int TA : 0x353A48;
+	int reset : 0x325D90;
+	int emblem : 0x21CE48;
+	int emerald : 0x13A4CA0;
+	string3 scr_id : 0x35F74C;
+	byte scr_temple : 0x353A80;
 }
 
 init
 {
-	if (modules.First().ModuleMemorySize == 21336064) version = "2.1.23 - 32 bits";
-	if (modules.First().ModuleMemorySize == 21745664) version = "2.1.23 - 64 bits";
+	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.24 - 64 bits";
+	if (modules.First().ModuleMemorySize == 21729280) version = "2.1.24 - 32 bits";
 
 	else if(version == "")
 	{
 		var result = MessageBox.Show(timer.Form,
 		"Your game version is not supported by this script version\n"
 		+ "You have to use the good version of the game\n"
-		+ "This script version works with SRB2 V2.1.23\n"
+		+ "This script version works with SRB2 V2.1.24\n"
 		+ "\nClick Yes to open the game update page.",
 		"SRB2 Livesplit Script",
 		MessageBoxButtons.YesNo,
@@ -66,6 +64,7 @@ init
 startup
 {
 	vars.totalTime = 0;
+	settings.Add("TA_S", true, "Start on Record Attack");
 	settings.Add("split", true, "Split time");
 	settings.Add("finnish", false, "Finish sign", "split");
 	settings.Add("a_clear", false, "Act clear appears", "split");
@@ -73,8 +72,8 @@ startup
 	settings.Add("loading", false, "Next level Loading", "split");
 	settings.Add("emerald", false, "Split on emeralds");
 	settings.Add("emblem", false, "Split on emblems (hover here please)");
-	settings.Add("TA_S", true, "Start on Record Attack");
 	settings.Add("temple", false, "(Mystic Realm) Temple split");
+	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
 	settings.SetToolTip("a_clear","Splits when the act clear screen appears");
 	settings.SetToolTip("s_b_clear", "Splits when your bonuses got added to the total");
