@@ -1,52 +1,52 @@
 /*I have a very basic knowledge about C# and ASL in general so this splitter is pretty basic and probably shouldn't be taken as an example.*/
 
-state("srb2win", "2.1.24 - 64 bits")
+state("srb2win", "2.1.25 - 64 bits")
 {
-	int start : 0x13DFDE8;
-	int split : 0x3882A0;
+	int start : 0x13DFDC8;
+	int split : 0x388280;
 	int level : 0x1BEBE4;
-	int framecounter : 0x13D2870;
-	int a_c_countdown : 0x13D2850;
-	int TBonus : 0x388330;
-	int RBonus : 0x388344;
-	int LBonus : 0x388350;
-	int TA : 0x37B674;
+	int framecounter : 0x13D2850;
+	int a_c_countdown : 0x13D2830;
+	int TBonus : 0x388310;
+	int RBonus : 0x388324;
+	int LBonus : 0x388330;
+	int TA : 0x37B658;
 	int reset : 0x345EF0;
 	int emblem : 0x23E3E4;
-	int emerald : 0x13D1CAC;
-	string3 scr_id : 0x37B6A0;
-	byte scr_temple : 0x387D84;
+	int emerald : 0x13D1C8C;
+	string3 scr_id : 0x37B680;
+	byte scr_temple : 0x387D9A;
 }
 
-state("srb2win", "2.1.24 - 32 bits")
+state("srb2win", "2.1.25 - 32 bits")
 {
-	int start : 0x13B04AC;
-	int split : 0x35FC40;
-	int level : 0x1B3F7C;
-	int framecounter : 0x13A530C;
-	int a_c_countdown : 0x13A52EC;
-	int TBonus : 0x35FCD0;
-	int RBonus : 0x35FCE4;
-	int LBonus : 0x35FCF0;
-	int TA : 0x353A48;
-	int reset : 0x325D90;
-	int emblem : 0x21CE48;
-	int emerald : 0x13A4CA0;
-	string3 scr_id : 0x35F74C;
-	byte scr_temple : 0x353A80;
+	int start : 0x13914AC;
+	int split : 0x340C40;
+	int level : 0x194F7C;
+	int framecounter : 0x138630C;
+	int a_c_countdown : 0x13862EC;
+	int TBonus : 0x340CD0;
+	int RBonus : 0x340CE4;
+	int LBonus : 0x340CF0;
+	int TA : 0x334A4C;
+	int reset : 0x306DB0;
+	int emblem : 0x1FDE28;
+	int emerald : 0x1385CA0;
+	string3 scr_id : 0x334A80;
+	byte scr_temple : 0x34077A;
 }
 
 init
 {
-	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.24 - 64 bits";
-	if (modules.First().ModuleMemorySize == 21729280) version = "2.1.24 - 32 bits";
+	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.25 - 64 bits";
+	if (modules.First().ModuleMemorySize == 21602304) version = "2.1.25 - 32 bits";
 
 	else if(version == "")
 	{
 		var result = MessageBox.Show(timer.Form,
 		"Your game version is not supported by this script version\n"
 		+ "You have to use the good version of the game\n"
-		+ "This script version works with SRB2 V2.1.24\n"
+		+ "This script version works with SRB2 V2.1.25\n"
 		+ "\nClick Yes to open the game update page.",
 		"SRB2 Livesplit Script",
 		MessageBoxButtons.YesNo,
