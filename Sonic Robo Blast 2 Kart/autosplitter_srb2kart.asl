@@ -46,6 +46,42 @@ state("srb2kart", "1.0.1")
 	int level : 0x1C3A7C;
 }
 
+state("srb2kart", "1.1 - Shaders 64 bits")
+{
+	int start_RA : 0x151B1A8;
+	int frameCounter_track : 0x15014C8;
+	int lap : 0x15014CC;
+	int laps_total : 0x1E2468;
+	int level : 0x1E75E8;
+}
+
+state("srb2kart", "1.1 - mservfix 64 bits")
+{
+	int start_RA : 0x14D8888;
+	int frameCounter_track : 0x14BEBA8;
+	int lap : 0x14BEBAC;
+	int laps_total : 0x1C8468;
+	int level : 0x1CD5E8;
+}
+
+state("srb2kart", "1.1 - Shaders 32 bits")
+{
+	int start_RA : 0x14C822C;
+	int frameCounter_track : 0x14B4034;
+	int lap : 0x14B1408;
+	int laps_total : 0x1C7CF4;
+	int level : 0x1CAE88;
+}
+
+state("srb2kart", "1.1 - mservfix 32 bits")
+{
+	int start_RA : 0x147698C;
+	int frameCounter_track : 0x145FB64;
+	int lap : 0x145FB68;
+	int laps_total : 0x1C2CF4;
+	int level : 0x1C5E88;
+}
+
 init
 {
 	if (modules.First().ModuleMemorySize == 22675456) version = "1.1 - 32 bits";
@@ -53,20 +89,24 @@ init
 	if (modules.First().ModuleMemorySize == 21766144) version = "1.0.4 - 32 bits";
 	if (modules.First().ModuleMemorySize == 22110208) version = "1.0.4 - 64 bits";
 	if (modules.First().ModuleMemorySize == 21483520) version = "1.0.1";
+	if (modules.First().ModuleMemorySize == 23220224) version = "1.1 - Shaders 64 bits";
+	if (modules.First().ModuleMemorySize == 22917120) version = "1.1 - mservfix 64 bits";
+	if (modules.First().ModuleMemorySize == 22732800) version = "1.1 - Shaders 32 bits";
+	if (modules.First().ModuleMemorySize == 22372352) version = "1.1 - mservfix 32 bits";
 
 	else if(version == "")
 	{
 		var result = MessageBox.Show(timer.Form,
-		"Your game version is not supported by this script version\n"
-		+ "You have to use the good version of the game\n"
-		+ "This script version works with SRB2Kart V1.0.1, V1.0.4, V1.1\n"
-		+ "\nClick Yes to open the game update page.",
+		"Your executable is not supported by this script version\n"
+		+ "Also make sure your executable name is srb2kart.exe\n"
+		+ "This script version works with vanilla V1.0.1, V1.0.4, V1.1 and some modded exes\n"
+		+ "\nClick OK if you want to open the README webpage",
 		"SRB2Kart Livesplit Script",
-		MessageBoxButtons.YesNo,
+		MessageBoxButtons.OKCancel,
 		MessageBoxIcon.Information);
-		if (result == DialogResult.Yes)
+		if (result == DialogResult.OK)
 		{
-			Process.Start("https://mb.srb2.org/forumdisplay.php?f=115");
+			Process.Start("https://github.com/R3FR4G/LiveSplit-ASL-Scripts/blob/master/Sonic%20Robo%20Blast%202%20Kart/README.md");
 		}
 	}
 
