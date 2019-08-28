@@ -8,6 +8,7 @@ state("srb2kart", "1.1 - 32 bits")
 	int lap : 0x14A8B88;
 	int laps_total : 0x1DCCF4;
 	int level : 0x1DFE88;
+	int inGame : 0x36FC10;
 }
 
 state("srb2kart", "1.1 - 64 bits")
@@ -17,6 +18,7 @@ state("srb2kart", "1.1 - 64 bits")
 	int lap : 0x14D9BAC;
 	int laps_total : 0x1E2468;
 	int level : 0x1E75E8;
+	int inGame : 0x395E90;
 }
 
 state("srb2kart", "1.0.4 - 32 bits")
@@ -26,6 +28,7 @@ state("srb2kart", "1.0.4 - 32 bits")
 	int lap : 0x13D98D0;
 	int laps_total : 0x1CDCF4;
 	int level : 0x1D0C98;
+	int inGame : 0x361C10;
 }
 
 state("srb2kart", "1.0.4 - 64 bits")
@@ -35,6 +38,7 @@ state("srb2kart", "1.0.4 - 64 bits")
 	int lap : 0x14090B4;
 	int laps_total : 0x1D2468;
 	int level : 0x1D72C8;
+	int inGame : 0x386E90;
 }
 
 state("srb2kart", "1.0.1")
@@ -44,6 +48,7 @@ state("srb2kart", "1.0.1")
 	int lap : 0x13A5F04;
 	int laps_total : 0x1C0AD4;
 	int level : 0x1C3A7C;
+	int inGame : 0x333980;
 }
 
 state("srb2kart", "1.1 - Shaders 64 bits")
@@ -53,6 +58,7 @@ state("srb2kart", "1.1 - Shaders 64 bits")
 	int lap : 0x15014CC;
 	int laps_total : 0x1E2468;
 	int level : 0x1E75E8;
+	int inGame : 0x3B8E90;
 }
 
 state("srb2kart", "1.1 - mservfix 64 bits")
@@ -62,6 +68,7 @@ state("srb2kart", "1.1 - mservfix 64 bits")
 	int lap : 0x14BEBAC;
 	int laps_total : 0x1C8468;
 	int level : 0x1CD5E8;
+	int inGame : 0x37AE90;
 }
 
 state("srb2kart", "1.1 - Shaders 32 bits")
@@ -71,6 +78,7 @@ state("srb2kart", "1.1 - Shaders 32 bits")
 	int lap : 0x14B1408;
 	int laps_total : 0x1C7CF4;
 	int level : 0x1CAE88;
+	int inGame : 0x376C10;
 }
 
 state("srb2kart", "1.1 - mservfix 32 bits")
@@ -80,6 +88,7 @@ state("srb2kart", "1.1 - mservfix 32 bits")
 	int lap : 0x145FB68;
 	int laps_total : 0x1C2CF4;
 	int level : 0x1C5E88;
+	int inGame : 0x326C10;
 }
 
 init
@@ -122,7 +131,7 @@ startup
 start
 {
 	vars.totalTime = 0;
-	if(current.start_RA == 1 && old.start_RA == 0)
+	if(current.start_RA == 1 && old.start_RA == 0 && current.inGame == 1)
 	{
 		return true;
 	}
