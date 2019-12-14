@@ -1,7 +1,7 @@
 # SRB2 autosplitter
 
 This autosplitter is for **SRB2** and works with some wad mods. (well currently, the only "approved" mod is **Mystic Realm** but it does work with other mods)  
-It is made to work only with the **latest** version of SRB2  
+It is made to work only with version **2.1.25** and **2.2.0** of SRB2  
 It also has **settings** so that you can control what it do and when.
 
 Feel free to leave any suggestion to improve this script!
