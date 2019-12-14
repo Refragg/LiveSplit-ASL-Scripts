@@ -36,17 +36,33 @@ state("srb2win", "2.1.25 - 32 bits")
 	byte scr_temple : 0x34077A;
 }
 
+state("srb2win", "2.2.0")
+{
+	int start : 0x43FA508;
+	int split : 0x3CA800;
+	int level : 0x2259A4;
+	int framecounter : 0x54DEFDC;
+	int a_c_countdown : 0x54DEFB8;
+	int TBonus : 0x3CA8B8;
+	int RBonus : 0x3CA8CC;
+	int LBonus : 0x3CA8D8;
+	int TA : 0x3BE1DC;
+	int reset : 0x38B398;
+	int emerald : 0x54E3BE0;
+}
+
 init
 {
 	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.25 - 64 bits";
 	if (modules.First().ModuleMemorySize == 21602304) version = "2.1.25 - 32 bits";
+	if (modules.First().ModuleMemorySize == 96985088) version = "2.2.0";
 
 	else if(version == "")
 	{
 		var result = MessageBox.Show(timer.Form,
 		"Your game version is not supported by this script version\n"
 		+ "You have to use the good version of the game\n"
-		+ "This script version works with SRB2 V2.1.25\n"
+		+ "This script version works with SRB2 V2.1.25 and V2.2.0\n"
 		+ "\nClick Yes to open the game update page.",
 		"SRB2 Livesplit Script",
 		MessageBoxButtons.YesNo,
@@ -71,8 +87,8 @@ startup
 	settings.Add("s_b_clear", false, "Bonuses clear", "split");
 	settings.Add("loading", false, "Next level Loading", "split");
 	settings.Add("emerald", false, "Split on emeralds");
-	settings.Add("emblem", false, "Split on emblems (hover here please)");
-	settings.Add("temple", false, "(Mystic Realm) Temple split");
+	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
+	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
 	settings.SetToolTip("a_clear","Splits when the act clear screen appears");
@@ -88,11 +104,11 @@ start
 	vars.totalTime = 0;
 	if(settings["TA_S"] == true)
 	{
-		return (current.start == 1 && current.start != old.start);
+		return (current.start == 1 && current.start != old.start && current.reset == 1);
 	}
 	else
 	{
-		return (current.start == 1 && current.start != old.start && current.TA == 0);
+		return (current.start == 1 && current.start != old.start && current.reset == 1 && current.TA == 0);
 	}
 }
 
@@ -113,7 +129,7 @@ update
 
 split
 {
-	if(settings["temple"] && current.scr_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
+	if(version != "2.2.0" && settings["temple"] && current.scr_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
 	{
 		return true;
 	}
@@ -121,7 +137,11 @@ split
 	{
 		return true;
 	}
-	if(settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 57)
+	if(version != "2.2.0" && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 57)
+	{
+		return true;
+	}
+	if(version == "2.2.0" && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 73)
 	{
 		return true;
 	}
@@ -129,36 +149,40 @@ split
 	{
 		return true;
 	}
-	if(settings["emblem"] && current.emblem == -1 && old.emblem == -2)
+	if(version != "2.2.0" && settings["emblem"] && current.emblem == -1 && old.emblem == -2)
 	{
 		return true;
 	}
 
-	if(current.level == 25)
-    {
-        return (old.a_c_countdown == 0 && current.a_c_countdown != 0);
-    }
-	else if(current.scr_id == "4.6" && current.level == 122 || current.level == 134)
+	if(version != "2.2.0" && current.level == 25)
+  {
+    return (old.a_c_countdown == 0 && current.a_c_countdown != 0);
+  }
+	if(version == "2.2.0" && current.level == 26 || current.level == 27)
+	{
+		return (old.a_c_countdown > 1 && current.a_c_countdown <= 1);
+	}
+	else if(version != "2.2.0" && current.scr_id == "4.6" && current.level == 122 || current.level == 134)
 	{
 		return (old.a_c_countdown == 0 && current.a_c_countdown != 0);
 	}
-    else if(settings["finnish"])
-    {
-        return (old.a_c_countdown == 0 && current.a_c_countdown != 0);
-    }
+  else if(settings["finnish"])
+  {
+    return (old.a_c_countdown == 0 && current.a_c_countdown != 0);
+  }
 	else if(settings["a_clear"])
 	{
 		return (old.a_c_countdown != 1 && current.a_c_countdown == 1);
-    }
+  }
 	else if(settings["s_b_clear"] && current.split == 1 && current.TBonus == 0 && current.RBonus == 0 && vars.OSplit == 0)
 	{
 		vars.OSplit = 1;
 		return true;
 	}
-    else if(settings["loading"])
-    {
-        return (current.split == 0 && old.split == 1);
-    }
+  else if(settings["loading"])
+  {
+  	return (current.split == 0 && old.split == 1);
+  }
 }
 
 reset
