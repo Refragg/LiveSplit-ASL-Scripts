@@ -47,7 +47,6 @@ state("srb2win", "2.2.0")
 	int RBonus : 0x3CA8CC;
 	int LBonus : 0x3CA8D8;
 	int TA : 0x3BE1DC;
-	int reset : 0x38B398;
 	int emerald : 0x54E3BE0;
 }
 
@@ -104,11 +103,11 @@ start
 	vars.totalTime = 0;
 	if(settings["TA_S"] == true)
 	{
-		return (current.start == 1 && current.start != old.start && current.reset == 1);
+		return (current.start == 1 && current.start != old.start);
 	}
 	else
 	{
-		return (current.start == 1 && current.start != old.start && current.reset == 1 && current.TA == 0);
+		return (current.start == 1 && current.start != old.start && current.TA == 0);
 	}
 }
 
@@ -158,7 +157,7 @@ split
   {
     return (old.a_c_countdown == 0 && current.a_c_countdown != 0);
   }
-	if(version == "2.2.0" && current.level == 26 || current.level == 27)
+	if(version == "2.2.0" && current.level == 25 || current.level == 26 || current.level == 27)
 	{
 		return (old.a_c_countdown > 1 && current.a_c_countdown <= 1);
 	}
@@ -187,7 +186,11 @@ split
 
 reset
 {
-	if(current.reset == 0 && current.reset != old.reset)
+	if(version != "2.2.0" && current.reset == 0 && current.reset != old.reset)
+	{
+		return true;
+	}
+	if(version == "2.2.0" && current.level == 99 && current.level != old.level)
 	{
 		return true;
 	}
