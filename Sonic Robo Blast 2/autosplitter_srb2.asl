@@ -48,6 +48,7 @@ state("srb2win", "2.2.0")
 	int LBonus : 0x3CA8D8;
 	int TA : 0x3BE1DC;
 	int emerald : 0x54E3BE0;
+	string4 music : 0x43F52D8;
 }
 
 init
@@ -85,6 +86,7 @@ startup
 	settings.Add("a_clear", false, "Act clear appears", "split");
 	settings.Add("s_b_clear", false, "Bonuses clear", "split");
 	settings.Add("loading", false, "Next level Loading", "split");
+	settings.Add("CEZR", false, "Split at the bridge falling section of CEZ1");
 	settings.Add("emerald", false, "Split on emeralds");
 	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
@@ -128,6 +130,10 @@ update
 
 split
 {
+	if(version == "2.2.0" && settings["CEZR"] && current.music == "CEZR" && current.music != old.music)
+	{
+		return true;
+	}
 	if(version != "2.2.0" && settings["temple"] && current.scr_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
 	{
 		return true;
