@@ -87,7 +87,7 @@ startup
 	settings.Add("s_b_clear", false, "Bonuses clear", "split");
 	settings.Add("loading", false, "Next level Loading", "split");
 	settings.Add("CEZR", false, "Split at the bridge falling section of CEZ1");
-	settings.Add("emerald", false, "Split on emeralds");
+	settings.Add("emerald", false, "Split on emerald tokens");
 	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
