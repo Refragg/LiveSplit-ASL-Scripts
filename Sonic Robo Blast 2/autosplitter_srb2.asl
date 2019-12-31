@@ -113,11 +113,11 @@ start
 	{
 		if(settings["TA_S"])
 		{
-			return (current.start == 1 && current.start != old.start && current.level == 1 && old.level == 99);
+			return (current.level == 1 && old.level == 99);
 		}
 		else
 		{
-			return (current.start == 1 && current.start != old.start && current.TA == 0 && current.level == 1 && old.level == 99);
+			return (current.TA == 0 && current.level == 1 && old.level == 99);
 		}
 	}
 	else
