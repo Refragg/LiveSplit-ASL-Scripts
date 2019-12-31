@@ -49,6 +49,7 @@ state("srb2win", "2.2.0")
 	int TA : 0x3BE1DC;
 	int emerald : 0x54E3BE0;
 	string4 music : 0x43F52D8;
+	int file : 0x22A5CC;
 }
 
 init
@@ -74,48 +75,68 @@ init
 	}
 	refreshRate = 35;
 	vars.OSplit = 0;
-
 }
 
 startup
 {
+	vars.dummy = 0;
 	vars.totalTime = 0;
+	settings.Add("startS", false, "(2.2 only) Only start at the first level");
 	settings.Add("TA_S", true, "Start on Record Attack");
 	settings.Add("split", true, "Split time");
 	settings.Add("finnish", false, "Finish sign", "split");
 	settings.Add("a_clear", false, "Act clear appears", "split");
 	settings.Add("s_b_clear", false, "Bonuses clear", "split");
 	settings.Add("loading", false, "Next level Loading", "split");
-	settings.Add("CEZR", false, "Split at the bridge falling section of CEZ1");
+	settings.Add("CEZR", false, "(2.2 only) Split at the bridge falling section of CEZ1");
 	settings.Add("emerald", false, "Split on emerald tokens");
+	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
 	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
+	settings.SetToolTip("startS","Avoids starting on existing files");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
 	settings.SetToolTip("a_clear","Splits when the act clear screen appears");
 	settings.SetToolTip("s_b_clear", "Splits when your bonuses got added to the total");
 	settings.SetToolTip("loading","Splits when the transition to the next level begins");
+	settings.SetToolTip("resetS","Avoids accidental timer resets");
 	settings.SetToolTip("emblem","Splits on hidden emblems, not on the record attack ones. At every restart of the game, you'll need to take one first emblem then it'll start to split");
 	settings.SetToolTip("temple","Splits when activating a temple");
 }
 
 start
 {
+	vars.dummy = 0;
 	vars.OSplit = 0;
 	vars.totalTime = 0;
-	if(settings["TA_S"] == true)
+	if(version == "2.2.0" && settings["startS"])
 	{
-		return (current.start == 1 && current.start != old.start);
+		if(settings["TA_S"])
+		{
+			return (current.start == 1 && current.start != old.start && current.level == 1 && old.level == 99);
+		}
+		else
+		{
+			return (current.start == 1 && current.start != old.start && current.TA == 0 && current.level == 1 && old.level == 99);
+		}
 	}
 	else
 	{
-		return (current.start == 1 && current.start != old.start && current.TA == 0);
+		if(settings["TA_S"])
+		{
+			return (current.start == 1 && current.start != old.start);
+		}
+		else
+		{
+			return (current.start == 1 && current.start != old.start && current.TA == 0);
+		}
 	}
 }
 
 update
 {
 	//print("Executable size is : " + modules.First().ModuleMemorySize);
+	//print("vars.dummy = " + vars.dummy);
 	int timeToAdd = Math.Max(0, current.framecounter-old.framecounter);
 	if(current.framecounter-old.framecounter < 15)
 	{
@@ -196,9 +217,13 @@ reset
 	{
 		return true;
 	}
-	if(version == "2.2.0" && current.level == 99 && current.level != old.level)
+	if(settings["resetS"])
 	{
-		return true;
+		return (version == "2.2.0" && current.level == 99 && current.level != old.level);
+	}
+	else if(current.file == 0)
+	{
+		return (version == "2.2.0" && current.level == 99 && current.level != old.level);
 	}
 	else
 	{
