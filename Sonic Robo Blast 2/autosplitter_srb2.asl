@@ -81,6 +81,7 @@ startup
 {
 	vars.dummy = 0;
 	vars.totalTime = 0;
+	vars.timerModel = new TimerModel { CurrentState = timer };
 	settings.Add("startS", false, "(2.2 only) Only start at the first level");
 	settings.Add("TA_S", true, "Start on Record Attack");
 	settings.Add("split", true, "Split time");
@@ -93,6 +94,7 @@ startup
 	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
 	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
+	settings.Add("hmsfix", false, "(2.2 only) HMS Double split fix");
 	settings.SetToolTip("startS","Avoids starting on existing files");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
@@ -102,6 +104,7 @@ startup
 	settings.SetToolTip("resetS","Avoids accidental timer resets");
 	settings.SetToolTip("emblem","Splits on hidden emblems, not on the record attack ones. At every restart of the game, you'll need to take one first emblem then it'll start to split");
 	settings.SetToolTip("temple","Splits when activating a temple");
+	settings.SetToolTip("hmsfix","Activate if it splits twice at Black Core");
 }
 
 start
@@ -146,6 +149,10 @@ update
 	if(current.split == 0 && vars.OSplit == 1)
 	{
 		vars.OSplit = 0;
+	}
+	if(settings["hmsfix"] && (current.level == 26 && old.level == 25) || (current.level == 27 && old.level == 26))
+	{
+		vars.timerModel.UndoSplit();
 	}
 }
 
