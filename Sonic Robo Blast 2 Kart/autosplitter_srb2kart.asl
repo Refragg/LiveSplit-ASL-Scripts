@@ -125,7 +125,6 @@ init
 startup
 {
 	vars.totalTime = 0;
-	settings.Add("split", false, "Split every lap");
 }
 
 start
@@ -140,19 +139,14 @@ start
 update
 {
 	//print("Executable size is : " + modules.First().ModuleMemorySize);
-	int timeToAdd = Math.Max(0, current.frameCounter_track-old.frameCounter_track);
-	if(current.frameCounter_track-old.frameCounter_track < 35)
+	if(current.lap == current.laps_total && current.lap != old.lap)
 	{
-		vars.totalTime += timeToAdd;
+		vars.totalTime += current.frameCounter_track;
 	}
 }
 
 split
 {
-	if(settings["split"] && current.lap > old.lap && current.frameCounter_track != 0 && current.lap != old.lap && current.lap != current.laps_total)
-	{
-		return true;
-	}
 	if(current.lap == current.laps_total && current.lap != old.lap)
 	{
 		return true;
