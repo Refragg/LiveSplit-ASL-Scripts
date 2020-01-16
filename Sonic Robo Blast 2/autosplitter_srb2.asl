@@ -217,9 +217,9 @@ reset
 	{
 		return true;
 	}
-	if(settings["resetS"])
+	if(version == "2.2.0" && settings["resetS"])
 	{
-		return (version == "2.2.0" && current.level == 99 && current.level != old.level);
+		return (current.level == 99 && current.level != old.level);
 	}
 	else if(version == "2.2.0" && current.file == 0)
 	{
