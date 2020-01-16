@@ -221,9 +221,9 @@ reset
 	{
 		return (version == "2.2.0" && current.level == 99 && current.level != old.level);
 	}
-	else if(current.file == 0)
+	else if(version == "2.2.0" && current.file == 0)
 	{
-		return (version == "2.2.0" && current.level == 99 && current.level != old.level);
+		return (current.level == 99 && current.level != old.level);
 	}
 	else
 	{
