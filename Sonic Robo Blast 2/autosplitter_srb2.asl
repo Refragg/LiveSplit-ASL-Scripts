@@ -14,8 +14,9 @@ state("srb2win", "2.1.25 - 64 bits")
 	int reset : 0x345EF0;
 	int emblem : 0x23E3E4;
 	int emerald : 0x13D1C8C;
-	string3 scr_id : 0x37B680;
+	string10 mod_id : 0x37B680;
 	byte scr_temple : 0x387D9A;
+	int sugoiBoss : 0x013D2760, 0x8, 0xF0, 0x0, 0xE0;
 }
 
 state("srb2win", "2.1.25 - 32 bits")
@@ -32,8 +33,9 @@ state("srb2win", "2.1.25 - 32 bits")
 	int reset : 0x306DB0;
 	int emblem : 0x1FDE28;
 	int emerald : 0x1385CA0;
-	string3 scr_id : 0x334A80;
+	string10 mod_id : 0x334A80;
 	byte scr_temple : 0x34077A;
+	int sugoiBoss : 0x01391420, 0x38, 0x0, 0x7C, 0x0, 0x90;
 }
 
 state("srb2win", "2.2.0")
@@ -93,6 +95,7 @@ startup
 	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
 	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
+	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1) Teleport Station split");
 	settings.SetToolTip("startS","Avoids starting on existing files");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
@@ -102,6 +105,7 @@ startup
 	settings.SetToolTip("resetS","Avoids accidental timer resets");
 	settings.SetToolTip("emblem","Splits on hidden emblems, not on the record attack ones. At every restart of the game, you'll need to take one first emblem then it'll start to split");
 	settings.SetToolTip("temple","Splits when activating a temple");
+	settings.SetToolTip("sugo_WSplit","Splits when you warp into a level from the Teleport Station");
 }
 
 start
@@ -151,11 +155,19 @@ update
 
 split
 {
+	if(settings["sugo_WSplit"] && version != "2.2.0" && current.mod_id == "SUGOI V1.2" && old.level == 100 && current.level != old.level)
+	{
+		return true;
+	}
+	if(version != "2.2.0" && current.mod_id == "SUGOI V1.2" && current.level == 28 && current.sugoiBoss == 0 && old.sugoiBoss == 1)
+	{
+		return true;
+	}
 	if(version == "2.2.0" && settings["CEZR"] && current.music == "CEZR" && current.music != old.music)
 	{
 		return true;
 	}
-	if(version != "2.2.0" && settings["temple"] && current.scr_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
+	if(version != "2.2.0" && settings["temple"] && current.mod_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
 	{
 		return true;
 	}
@@ -188,7 +200,7 @@ split
 	{
 		return (old.a_c_countdown > 1 && current.a_c_countdown <= 1);
 	}
-	else if(version != "2.2.0" && current.scr_id == "4.6" && current.level == 122 || current.level == 134)
+	else if(version != "2.2.0" && current.mod_id == "4.6" && current.level == 122 || current.level == 134)
 	{
 		return (old.a_c_countdown == 0 && current.a_c_countdown != 0);
 	}
