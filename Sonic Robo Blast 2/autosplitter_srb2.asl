@@ -81,6 +81,7 @@ init
 
 startup
 {
+  vars.timerModel = new TimerModel { CurrentState = timer };
 	vars.dummy = 0;
 	vars.totalTime = 0;
 	settings.Add("startS", false, "(2.2 only) Only start at the first level");
@@ -95,7 +96,7 @@ startup
 	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
 	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
-	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1) Teleport Station split");
+	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1/2) Teleport Station split");
 	settings.SetToolTip("startS","Avoids starting on existing files");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
@@ -151,11 +152,16 @@ update
 	{
 		vars.OSplit = 0;
 	}
+
+	if(current.mod_id == "SUBARASHII" && current.level == 100 && old.level == 101)
+	{
+		vars.timerModel.UndoSplit();
+	}
 }
 
 split
 {
-	if(settings["sugo_WSplit"] && version != "2.2.0" && current.mod_id == "SUGOI V1.2" && old.level == 100 && current.level != old.level)
+	if(settings["sugo_WSplit"] && version != "2.2.0" && current.mod_id == "SUGOI V1.2" || current.mod_id == "SUBARASHII" && old.level == 100 && current.level != old.level)
 	{
 		return true;
 	}
