@@ -153,7 +153,7 @@ update
 		vars.OSplit = 0;
 	}
 
-	if(current.mod_id == "SUBARASHII" && current.level == 100 && old.level == 101)
+	if(version != "2.2.0" && current.mod_id == "SUBARASHII" && current.level == 100 && old.level == 101)
 	{
 		vars.timerModel.UndoSplit();
 	}
@@ -161,7 +161,7 @@ update
 
 split
 {
-	if(settings["sugo_WSplit"] && version != "2.2.0" && current.mod_id == "SUGOI V1.2" || current.mod_id == "SUBARASHII" && old.level == 100 && current.level != old.level)
+	if(version != "2.2.0" && settings["sugo_WSplit"] && (current.mod_id == "SUGOI V1.2" || current.mod_id == "SUBARASHII") && old.level == 100 && current.level != old.level)
 	{
 		return true;
 	}
