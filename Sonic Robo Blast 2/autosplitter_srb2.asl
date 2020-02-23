@@ -38,34 +38,64 @@ state("srb2win", "2.1.25 - 32 bits")
 	int sugoiBoss : 0x01391420, 0x38, 0x0, 0x7C, 0x0, 0x90;
 }
 
-state("srb2win", "2.2.1")
+state("srb2win", "2.2.2 - 64 bits")
 {
-	int start : 0x44491E8;
-	int split : 0x3E0120;
-	int level : 0x3D3EDC;
-	int framecounter : 0x5530EFC;
-	int exitCountdown : 0x5530ED8;
-	int TBonus : 0x3E01B0;
-	int RBonus : 0x3E01C4;
-	int LBonus : 0x3E01D0;
-	int TA : 0x3D3ECC;
-	int emerald : 0x5530340;
-	string4 music : 0x44440D4;
-	int file : 0x22A184;
+	int start : 0x450ABC0;
+	int split : 0x4586C0;
+	int level : 0x44BA28;
+	int framecounter : 0x55F668C;
+	int exitCountdown : 0x55F6668;
+	int TBonus : 0x458770;
+	int RBonus : 0x458784;
+	int LBonus : 0x458790;
+	int TA : 0x44BA18;
+	int emerald : 0x55FB470;
+	string4 music : 0x45063E2;
+	int file : 0x2483A4;
+}
+
+state("srb2win", "2.2.2 - 32 bits")
+{
+	int start : 0x444E208;
+	int split : 0x3E5120;
+	int level : 0x3D8EDC;
+	int framecounter : 0x5535F44;
+	int exitCountdown : 0x5535F20;
+	int TBonus : 0x3E51B0;
+	int RBonus : 0x3E51C4;
+	int LBonus : 0x3E51D0;
+	int TA : 0x3D8ECC;
+	int emerald : 0x5535380;
+	string4 music : 0x44490F4;
+	int file : 0x22D1C4;
 }
 
 init
 {
 	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.25 - 64 bits";
 	if (modules.First().ModuleMemorySize == 21602304) version = "2.1.25 - 32 bits";
-	if (modules.First().ModuleMemorySize == 98951168) version = "2.2.1";
+	if (modules.First().ModuleMemorySize == 98971648) version = "2.2.2 - 32 bits";
+	if (modules.First().ModuleMemorySize == 99946496) version = "2.2.2 - 64 bits";
 
-	else if(version == "")
+	if(version == "2.2.2 - 64 bits" || version == "2.2.2 - 32 bits")
+	{
+		vars.branch = 2;
+	}
+	if(version == "2.1.25 - 64 bits" || version == "2.1.25 - 32 bits")
+	{
+		vars.branch = 1;
+	}
+	if(version == "")
+	{
+		vars.branch = 0;
+	}
+
+	if(version == "")
 	{
 		var result = MessageBox.Show(timer.Form,
 		"Your game version is not supported by this script version\n"
 		+ "You have to use the good version of the game\n"
-		+ "This script version works with SRB2 V2.1.25 and V2.2.1\n"
+		+ "This script version works with SRB2 V2.1.25 and V2.2.2\n"
 		+ "\nClick Yes to open the game update page.",
 		"SRB2 Livesplit Script",
 		MessageBoxButtons.YesNo,
@@ -125,7 +155,7 @@ start
 update
 {
 	//print("Executable size is : " + modules.First().ModuleMemorySize);
-	//print("vars.dummy = " + vars.dummy);
+	//print("vars.branch = " + vars.branch);
 	int timeToAdd = Math.Max(0, current.framecounter-old.framecounter);
 	if(current.framecounter-old.framecounter < 15)
 	{
@@ -137,7 +167,7 @@ update
 		vars.OSplit = 0;
 	}
 
-	if(version != "2.2.1" && current.mod_id == "SUBARASHII" && current.level == 100 && old.level == 101)
+	if(vars.branch == 1 && current.mod_id == "SUBARASHII" && current.level == 100 && old.level == 101)
 	{
 		vars.timerModel.UndoSplit();
 	}
@@ -145,19 +175,19 @@ update
 
 split
 {
-	if(version != "2.2.1" && settings["sugo_WSplit"] && (current.mod_id == "SUGOI V1.2" || current.mod_id == "SUBARASHII") && old.level == 100 && current.level != old.level)
+	if(vars.branch == 1 && settings["sugo_WSplit"] && (current.mod_id == "SUGOI V1.2" || current.mod_id == "SUBARASHII") && old.level == 100 && current.level != old.level)
 	{
 		return true;
 	}
-	if(version != "2.2.1" && current.mod_id == "SUGOI V1.2" && current.level == 28 && current.sugoiBoss == 0 && old.sugoiBoss == 1)
+	if(vars.branch == 1 && current.mod_id == "SUGOI V1.2" && current.level == 28 && current.sugoiBoss == 0 && old.sugoiBoss == 1)
 	{
 		return true;
 	}
-	if(version == "2.2.1" && settings["CEZR"] && current.music == "CEZR" && current.music != old.music)
+	if(vars.branch == 2 && settings["CEZR"] && current.music == "CEZR" && current.music != old.music)
 	{
 		return true;
 	}
-	if(version != "2.2.1" && settings["temple"] && current.mod_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
+	if(vars.branch == 1 && settings["temple"] && current.mod_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
 	{
 		return true;
 	}
@@ -165,11 +195,11 @@ split
 	{
 		return true;
 	}
-	if(version != "2.2.1" && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 57)
+	if(vars.branch == 1 && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 57)
 	{
 		return true;
 	}
-	if(version == "2.2.1" && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 73)
+	if(vars.branch == 2 && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 73)
 	{
 		return true;
 	}
@@ -177,20 +207,20 @@ split
 	{
 		return true;
 	}
-	if(version != "2.2.1" && settings["emblem"] && current.emblem == -1 && old.emblem == -2)
+	if(vars.branch == 1 && settings["emblem"] && current.emblem == -1 && old.emblem == -2)
 	{
 		return true;
 	}
 
-	if(version != "2.2.1" && current.level == 25)
+	if(vars.branch == 1 && current.level == 25)
   {
     return (old.exitCountdown == 0 && current.exitCountdown != 0);
   }
-	if(version == "2.2.1" && current.level == 25 || current.level == 26 || current.level == 27)
+	if(vars.branch == 2 && current.level == 25 || current.level == 26 || current.level == 27)
 	{
 		return (old.exitCountdown > 1 && current.exitCountdown <= 1);
 	}
-	else if(version != "2.2.1" && current.mod_id == "4.6" && current.level == 122 || current.level == 134)
+	else if(vars.branch == 1 && current.mod_id == "4.6" && current.level == 122 || current.level == 134)
 	{
 		return (old.exitCountdown == 0 && current.exitCountdown != 0);
 	}
@@ -215,15 +245,15 @@ split
 
 reset
 {
-	if(version != "2.2.1" && current.reset == 0 && current.reset != old.reset)
+	if(vars.branch == 1 && current.reset == 0 && current.reset != old.reset)
 	{
 		return true;
 	}
-	if(version == "2.2.1" && settings["resetS"])
+	if(vars.branch == 2 && settings["resetS"])
 	{
 		return (current.level == 99 && current.level != old.level);
 	}
-	else if(version == "2.2.1" && current.file == 0)
+	else if(vars.branch == 2 && current.file == 0)
 	{
 		return (current.level == 99 && current.level != old.level);
 	}
