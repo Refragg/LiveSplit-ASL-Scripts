@@ -11,7 +11,7 @@ state("srb2win", "2.1.25 - 64 bits")
 	int RBonus : 0x388324;
 	int LBonus : 0x388330;
 	int TA : 0x37B658;
-	int reset : 0x345EF0;
+	int reset : 0x13D5DC8;
 	int emblem : 0x23E3E4;
 	int emerald : 0x13D1C8C;
 	string10 mod_id : 0x37B680;
@@ -30,7 +30,7 @@ state("srb2win", "2.1.25 - 32 bits")
 	int RBonus : 0x340CE4;
 	int LBonus : 0x340CF0;
 	int TA : 0x334A4C;
-	int reset : 0x306DB0;
+	int reset : 0x138959C;
 	int emblem : 0x1FDE28;
 	int emerald : 0x1385CA0;
 	string10 mod_id : 0x334A80;
@@ -90,7 +90,7 @@ init
 		vars.branch = 0;
 	}
 
-	if(version == "")
+	if(vars.branch == 0)
 	{
 		var result = MessageBox.Show(timer.Form,
 		"Your game version is not supported by this script version\n"
@@ -107,6 +107,7 @@ init
 	}
 	refreshRate = 35;
 	vars.OSplit = 0;
+	vars.sugoUndo = 0;
 }
 
 startup
@@ -125,13 +126,13 @@ startup
 	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
 	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
-	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1/2) Teleport Station split");
+	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1/2/3) Teleport Station split");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
 	settings.SetToolTip("a_clear","Splits when the act clear screen appears");
 	settings.SetToolTip("s_b_clear", "Splits when your bonuses got added to the total");
 	settings.SetToolTip("loading","Splits when the transition to the next level begins");
-	settings.SetToolTip("resetS","Avoids accidental timer resets");
+	settings.SetToolTip("resetS","Disabled by default to avoid accidental timer resets");
 	settings.SetToolTip("emblem","Splits on hidden emblems, not on the record attack ones. At every restart of the game, you'll need to take one first emblem then it'll start to split");
 	settings.SetToolTip("temple","Splits when activating a temple");
 	settings.SetToolTip("sugo_WSplit","Splits when you warp into a level from the Teleport Station");
@@ -141,6 +142,7 @@ start
 {
 	vars.dummy = 0;
 	vars.OSplit = 0;
+	vars.sugoUndo = 0;
 	vars.totalTime = 0;
 	if(settings["TA_S"])
 	{
@@ -167,39 +169,104 @@ update
 		vars.OSplit = 0;
 	}
 
-	if(vars.branch == 1 && current.mod_id == "SUBARASHII" && current.level == 100 && old.level == 101)
+	if(vars.branch == 1)
 	{
-		vars.timerModel.UndoSplit();
+		if (current.mod_id == "SUBARASHII" && current.level == 101)
+		{
+			if (settings["finnish"] && current.exitCountdown < 99 && current.exitCountdown != old.exitCountdown && vars.sugoUndo == 0)
+			{
+				vars.timerModel.UndoSplit();
+				vars.sugoUndo = 1;
+			}
+			if (settings["a_clear"] && current.exitCountdown == 1 && old.exitCountdown == 1 && vars.sugoUndo == 0)
+			{
+				vars.timerModel.UndoSplit();
+				vars.sugoUndo = 1;
+			}
+		}
+
+		if (current.mod_id == "SUBARASHII" && current.level == 100)
+		{
+			vars.sugoUndo = 0;
+		}
+
+
+		if (current.mod_id == "KIMOKAWAII" && current.level == 1035)
+		{
+			if (settings["finnish"] && current.exitCountdown < 99 && current.exitCountdown != old.exitCountdown && vars.sugoUndo == 0)
+			{
+				vars.timerModel.UndoSplit();
+				vars.sugoUndo = 1;
+			}
+			if (settings["a_clear"] && current.exitCountdown == 1 && old.exitCountdown == 1 && vars.sugoUndo == 0)
+			{
+				vars.timerModel.UndoSplit();
+				vars.sugoUndo = 1;
+			}
+		}
+		if (current.mod_id == "KIMOKAWAII" && current.level == 100)
+		{
+			vars.sugoUndo = 0;
+		}
 	}
 }
 
 split
 {
-	if(vars.branch == 1 && settings["sugo_WSplit"] && (current.mod_id == "SUGOI V1.2" || current.mod_id == "SUBARASHII") && old.level == 100 && current.level != old.level)
+	if (vars.branch == 1)
 	{
-		return true;
+		if(settings["sugo_WSplit"])
+		{
+			if((current.mod_id == "SUGOI V1.2" || current.mod_id == "SUBARASHII" || current.mod_id == "KIMOKAWAII") && old.level == 100 && current.level != old.level)
+			{
+				return true;
+			}
+		}
+		if(current.mod_id == "SUGOI V1.2" && current.level == 28 && current.sugoiBoss == 0 && old.sugoiBoss == 1)
+		{
+			return true;
+		}
+
+		if(settings["temple"] && current.mod_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
+		{
+			return true;
+		}
+
+		if(settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 57)
+		{
+			return true;
+		}
+		if(settings["emblem"] && current.emblem == -1 && old.emblem == -2)
+		{
+			return true;
+		}
+		if(current.level == 25 && current.mod_id == "" && old.exitCountdown == 0 && current.exitCountdown != 0)
+		{
+			return true;
+		}
+		if(current.mod_id == "4.6" && current.level == 122 || current.level == 134 && old.exitCountdown == 0 && current.exitCountdown != 0)
+		{
+			return true;
+		}
 	}
-	if(vars.branch == 1 && current.mod_id == "SUGOI V1.2" && current.level == 28 && current.sugoiBoss == 0 && old.sugoiBoss == 1)
+
+	if (vars.branch == 2)
 	{
-		return true;
+		if(settings["CEZR"] && current.music == "CEZR" && current.music != old.music)
+		{
+			return true;
+		}
+		if(settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 73)
+		{
+			return true;
+		}
+		if((current.level == 25 || current.level == 26 || current.level == 27) && old.exitCountdown > 1 && current.exitCountdown <= 1)
+		{
+			return true;
+		}
 	}
-	if(vars.branch == 2 && settings["CEZR"] && current.music == "CEZR" && current.music != old.music)
-	{
-		return true;
-	}
-	if(vars.branch == 1 && settings["temple"] && current.mod_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
-	{
-		return true;
-	}
+
 	if(settings["s_b_clear"] && current.LBonus == 0 && old.LBonus != 0)
-	{
-		return true;
-	}
-	if(vars.branch == 1 && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 57)
-	{
-		return true;
-	}
-	if(vars.branch == 2 && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 73)
 	{
 		return true;
 	}
@@ -207,39 +274,23 @@ split
 	{
 		return true;
 	}
-	if(vars.branch == 1 && settings["emblem"] && current.emblem == -1 && old.emblem == -2)
+
+  if(settings["finnish"] && old.exitCountdown == 0 && current.exitCountdown != 0)
+  {
+    return true;
+  }
+	if(settings["a_clear"] && old.exitCountdown != 1 && current.exitCountdown == 1)
 	{
 		return true;
-	}
-
-	if(vars.branch == 1 && current.level == 25)
-  {
-    return (old.exitCountdown == 0 && current.exitCountdown != 0);
   }
-	if(vars.branch == 2 && current.level == 25 || current.level == 26 || current.level == 27)
-	{
-		return (old.exitCountdown > 1 && current.exitCountdown <= 1);
-	}
-	else if(vars.branch == 1 && current.mod_id == "4.6" && current.level == 122 || current.level == 134)
-	{
-		return (old.exitCountdown == 0 && current.exitCountdown != 0);
-	}
-  else if(settings["finnish"])
-  {
-    return (old.exitCountdown == 0 && current.exitCountdown != 0);
-  }
-	else if(settings["a_clear"])
-	{
-		return (old.exitCountdown != 1 && current.exitCountdown == 1);
-  }
-	else if(settings["s_b_clear"] && current.split == 1 && current.TBonus == 0 && current.RBonus == 0 && vars.OSplit == 0)
+	if(settings["s_b_clear"] && current.split == 1 && current.TBonus == 0 && current.RBonus == 0 && vars.OSplit == 0)
 	{
 		vars.OSplit = 1;
 		return true;
 	}
-  else if(settings["loading"])
+  if(settings["loading"] && current.split == 0 && old.split == 1)
   {
-  	return (current.split == 0 && old.split == 1);
+  	return true;
   }
 }
 
@@ -249,17 +300,16 @@ reset
 	{
 		return true;
 	}
-	if(vars.branch == 2 && settings["resetS"])
+	if(vars.branch == 2 && current.level == 99 && current.level != old.level)
 	{
-		return (current.level == 99 && current.level != old.level);
-	}
-	else if(vars.branch == 2 && current.file == 0)
-	{
-		return (current.level == 99 && current.level != old.level);
-	}
-	else
-	{
-		return false;
+		if (settings["resetS"])
+		{
+			return true;
+		}
+		else if (current.file == 0)
+		{
+			return true;
+		}
 	}
 }
 
