@@ -240,13 +240,33 @@ split
 		{
 			return true;
 		}
-		if(current.level == 25 && current.mod_id == "" && old.exitCountdown == 0 && current.exitCountdown != 0)
+
+		if ((current.mod_id == "" && current.level == 25) || (current.mod_id == "4.6" && current.level == 122 || current.level == 134))
 		{
-			return true;
+			if(old.exitCountdown == 0 && current.exitCountdown != 0)
+			{
+				return true;
+			}
 		}
-		if(current.mod_id == "4.6" && current.level == 122 || current.level == 134 && old.exitCountdown == 0 && current.exitCountdown != 0)
+		else
 		{
-			return true;
+			if(settings["finnish"] && old.exitCountdown == 0 && current.exitCountdown != 0)
+			{
+				return true;
+			}
+			if(settings["a_clear"] && old.exitCountdown != 1 && current.exitCountdown == 1)
+			{
+				return true;
+			}
+			if(settings["s_b_clear"] && current.split == 1 && current.TBonus == 0 && current.RBonus == 0 && vars.OSplit == 0)
+			{
+				vars.OSplit = 1;
+				return true;
+			}
+			if(settings["loading"] && current.split == 0 && old.split == 1)
+			{
+				return true;
+			}
 		}
 	}
 
@@ -260,9 +280,32 @@ split
 		{
 			return true;
 		}
-		if((current.level == 25 || current.level == 26 || current.level == 27) && old.exitCountdown > 1 && current.exitCountdown <= 1)
+		if(current.level == 25 || current.level == 26 || current.level == 27)
 		{
-			return true;
+			if(old.exitCountdown > 1 && current.exitCountdown <= 1)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			if(settings["finnish"] && old.exitCountdown == 0 && current.exitCountdown != 0)
+			{
+				return true;
+			}
+			if(settings["a_clear"] && old.exitCountdown != 1 && current.exitCountdown == 1)
+			{
+				return true;
+			}
+			if(settings["s_b_clear"] && current.split == 1 && current.TBonus == 0 && current.RBonus == 0 && vars.OSplit == 0)
+			{
+				vars.OSplit = 1;
+				return true;
+			}
+			if(settings["loading"] && current.split == 0 && old.split == 1)
+			{
+				return true;
+			}
 		}
 	}
 
@@ -274,24 +317,6 @@ split
 	{
 		return true;
 	}
-
-  if(settings["finnish"] && old.exitCountdown == 0 && current.exitCountdown != 0)
-  {
-    return true;
-  }
-	if(settings["a_clear"] && old.exitCountdown != 1 && current.exitCountdown == 1)
-	{
-		return true;
-  }
-	if(settings["s_b_clear"] && current.split == 1 && current.TBonus == 0 && current.RBonus == 0 && vars.OSplit == 0)
-	{
-		vars.OSplit = 1;
-		return true;
-	}
-  if(settings["loading"] && current.split == 0 && old.split == 1)
-  {
-  	return true;
-  }
 }
 
 reset
