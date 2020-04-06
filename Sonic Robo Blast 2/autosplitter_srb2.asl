@@ -17,6 +17,7 @@ state("srb2win", "2.1.25 - 64 bits")
 	string10 mod_id : 0x37B680;
 	byte scr_temple : 0x387D9A;
 	int sugoiBoss : 0x013D2760, 0x8, 0xF0, 0x0, 0xE0;
+	int isWatching : 0x13D26D8;
 }
 
 state("srb2win", "2.1.25 - 32 bits")
@@ -36,6 +37,7 @@ state("srb2win", "2.1.25 - 32 bits")
 	string10 mod_id : 0x334A80;
 	byte scr_temple : 0x34077A;
 	int sugoiBoss : 0x01391420, 0x38, 0x0, 0x7C, 0x0, 0x90;
+	int isWatching : 0x13861E4;
 }
 
 state("srb2win", "2.2.2 - 64 bits")
@@ -52,6 +54,7 @@ state("srb2win", "2.2.2 - 64 bits")
 	int emerald : 0x55FB470;
 	string4 music : 0x45063E2;
 	int file : 0x2483A4;
+	int isWatching : 0x55FBD84;
 }
 
 state("srb2win", "2.2.2 - 32 bits")
@@ -68,6 +71,7 @@ state("srb2win", "2.2.2 - 32 bits")
 	int emerald : 0x5535380;
 	string4 music : 0x44490F4;
 	int file : 0x22D1C4;
+	int isWatching : 0x5535940;
 }
 
 init
@@ -144,13 +148,16 @@ start
 	vars.OSplit = 0;
 	vars.sugoUndo = 0;
 	vars.totalTime = 0;
-	if(settings["TA_S"])
+	if(current.isWatching == 0)
 	{
-		return (current.start == 1 && current.start != old.start);
-	}
-	else
-	{
-		return (current.start == 1 && current.start != old.start && current.TA == 0);
+		if(settings["TA_S"])
+		{
+			return (current.start == 1 && current.start != old.start);
+		}
+		else
+		{
+			return (current.start == 1 && current.start != old.start && current.TA == 0);
+		}
 	}
 }
 
