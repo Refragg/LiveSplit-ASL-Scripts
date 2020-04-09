@@ -118,10 +118,11 @@ startup
 {
   vars.timerModel = new TimerModel { CurrentState = timer };
 	vars.dummy = 0;
+	vars.splitDelay = 0;
 	vars.totalTime = 0;
 	vars.line = "";
 	vars.prevLine = "";
-	vars.initprev = 0;
+	vars.ESplit = 0;
 	settings.Add("TA_S", true, "Start on Record Attack");
 	settings.Add("split", true, "Split time");
 	settings.Add("finnish", false, "Finish sign", "split");
@@ -151,6 +152,8 @@ start
 {
 	vars.dummy = 0;
 	vars.OSplit = 0;
+	vars.ESplit = 0;
+	vars.splitDelay = 0;
 	vars.sugoUndo = 0;
 	vars.totalTime = 0;
 	if(current.isWatching == 0)
@@ -224,12 +227,18 @@ update
 	}
 	if (vars.branch == 2 && settings["emblem2"])
 	{
+		vars.splitDelay = Math.Max(0, vars.splitDelay-1);
 		string[] lines = File.ReadAllLines("Components\\SRB2 Emblems.txt");
 		vars.line = lines[0];
-		if (vars.initprev == 0)
+		if (vars.line != vars.prevLine)
 		{
-			vars.prevLine = vars.line;
-			vars.initprev = 1;
+			vars.ESplit = 1;
+			vars.splitDelay = 10;
+		}
+		vars.prevLine = vars.line;
+		if (vars.splitDelay == 0)
+		{
+			vars.ESplit = 0;
 		}
 	}
 }
@@ -332,9 +341,9 @@ split
 		}
 		if(settings["emblem2"])
 		{
-			if (vars.line != vars.prevLine && current.framecounter != old.framecounter)
+			if (vars.ESplit == 1 && current.framecounter != old.framecounter)
 			{
-				vars.prevLine = vars.line;
+				vars.ESplit = 0;
 				return true;
 			}
 		}
