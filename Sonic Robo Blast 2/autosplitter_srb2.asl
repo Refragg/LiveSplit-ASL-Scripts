@@ -119,6 +119,9 @@ startup
   vars.timerModel = new TimerModel { CurrentState = timer };
 	vars.dummy = 0;
 	vars.totalTime = 0;
+	vars.line = "";
+	vars.prevLine = "";
+	vars.initprev = 0;
 	settings.Add("TA_S", true, "Start on Record Attack");
 	settings.Add("split", true, "Split time");
 	settings.Add("finnish", false, "Finish sign", "split");
@@ -129,6 +132,7 @@ startup
 	settings.Add("emerald", false, "Split on emerald tokens");
 	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
 	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
+	settings.Add("emblem2", false, "(2.2 only) Split on emblems using an external program (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
 	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1/2/3) Teleport Station split");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
@@ -138,6 +142,7 @@ startup
 	settings.SetToolTip("loading","Splits when the transition to the next level begins");
 	settings.SetToolTip("resetS","Disabled by default to avoid accidental timer resets");
 	settings.SetToolTip("emblem","Splits on hidden emblems, not on the record attack ones. At every restart of the game, you'll need to take one first emblem then it'll start to split");
+	settings.SetToolTip("emblem2","Splits on hidden emblems, not on the record attack ones. You need to use Ors emblem display program in order to work");
 	settings.SetToolTip("temple","Splits when activating a temple");
 	settings.SetToolTip("sugo_WSplit","Splits when you warp into a level from the Teleport Station");
 }
@@ -214,6 +219,17 @@ update
 		if (current.mod_id == "KIMOKAWAII" && current.level == 100)
 		{
 			vars.sugoUndo = 0;
+		}
+
+	}
+	if (vars.branch == 2 && settings["emblem2"])
+	{
+		string[] lines = File.ReadAllLines("Components\\SRB2 Emblems.txt");
+		vars.line = lines[0];
+		if (vars.initprev == 0)
+		{
+			vars.prevLine = vars.line;
+			vars.initprev = 1;
 		}
 	}
 }
@@ -311,6 +327,14 @@ split
 			}
 			if(settings["loading"] && current.split == 0 && old.split == 1)
 			{
+				return true;
+			}
+		}
+		if(settings["emblem2"])
+		{
+			if (vars.line != vars.prevLine && current.framecounter != old.framecounter)
+			{
+				vars.prevLine = vars.line;
 				return true;
 			}
 		}
