@@ -228,17 +228,20 @@ update
 	if (vars.branch == 2 && settings["emblem2"])
 	{
 		vars.splitDelay = Math.Max(0, vars.splitDelay-1);
-		string[] lines = File.ReadAllLines("Components\\SRB2 Emblems.txt");
-		vars.line = lines[0];
-		if (vars.line != vars.prevLine)
+		if(File.Exists("Components\\SRB2 Emblems.txt"))
 		{
-			vars.ESplit = 1;
-			vars.splitDelay = 10;
-		}
-		vars.prevLine = vars.line;
-		if (vars.splitDelay == 0)
-		{
-			vars.ESplit = 0;
+			string[] lines = File.ReadAllLines("Components\\SRB2 Emblems.txt");
+			vars.line = lines[0];
+			if (vars.line != vars.prevLine)
+			{
+				vars.ESplit = 1;
+				vars.splitDelay = 10;
+			}
+			vars.prevLine = vars.line;
+			if (vars.splitDelay == 0)
+			{
+				vars.ESplit = 0;
+			}
 		}
 	}
 }
