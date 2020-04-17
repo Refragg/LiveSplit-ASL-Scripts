@@ -311,7 +311,7 @@ split
 		{
 			return true;
 		}
-		if(settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 73)
+		if(settings["loading"] && current.exitCountdown == 0 && old.exitCountdown > 0 && old.level >= 50 && old.level <= 73)
 		{
 			return true;
 		}
