@@ -40,48 +40,30 @@ state("srb2win", "2.1.25 - 32 bits")
 	int isWatching : 0x13861E4;
 }
 
-state("srb2win", "2.2.2 - 64 bits")
+state("srb2win", "2.2.3")
 {
-	int start : 0x450ABC0;
-	int split : 0x4586C0;
-	int level : 0x44BA28;
-	int framecounter : 0x55F668C;
-	int exitCountdown : 0x55F6668;
-	int TBonus : 0x458770;
-	int RBonus : 0x458784;
-	int LBonus : 0x458790;
-	int TA : 0x44BA18;
-	int emerald : 0x55FB470;
-	string4 music : 0x45063E2;
-	int file : 0x2483A4;
-	int isWatching : 0x55FBD84;
-}
-
-state("srb2win", "2.2.2 - 32 bits")
-{
-	int start : 0x444E208;
-	int split : 0x3E5120;
-	int level : 0x3D8EDC;
-	int framecounter : 0x5535F44;
-	int exitCountdown : 0x5535F20;
-	int TBonus : 0x3E51B0;
-	int RBonus : 0x3E51C4;
-	int LBonus : 0x3E51D0;
-	int TA : 0x3D8ECC;
-	int emerald : 0x5535380;
-	string4 music : 0x44490F4;
-	int file : 0x22D1C4;
-	int isWatching : 0x5535940;
+	int start : 0x44559A8;
+	int split : 0x3EC180;
+	int level : 0x3E021C;
+	int framecounter : 0x5541844;
+	int exitCountdown : 0x5541820;
+	int TBonus : 0x3EC210;
+	int RBonus : 0x3EC224;
+	int LBonus : 0x3EC230;
+	int TA : 0x3E020C;
+	int emerald : 0x5540C80;
+	string4 music : 0x4450194;
+	int file : 0x2323C4;
+	int isWatching : 0x5540C44;
 }
 
 init
 {
 	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.25 - 64 bits";
 	if (modules.First().ModuleMemorySize == 21602304) version = "2.1.25 - 32 bits";
-	if (modules.First().ModuleMemorySize == 98971648) version = "2.2.2 - 32 bits";
-	if (modules.First().ModuleMemorySize == 99946496) version = "2.2.2 - 64 bits";
+	if (modules.First().ModuleMemorySize == 99020800) version = "2.2.3";
 
-	if(version == "2.2.2 - 64 bits" || version == "2.2.2 - 32 bits")
+	if(version == "2.2.3")
 	{
 		vars.branch = 2;
 	}
@@ -99,7 +81,7 @@ init
 		var result = MessageBox.Show(timer.Form,
 		"Your game version is not supported by this script version\n"
 		+ "You have to use the good version of the game\n"
-		+ "This script version works with SRB2 V2.1.25 and V2.2.2\n"
+		+ "This script version works with SRB2 V2.1.25 and V2.2.3\n"
 		+ "\nClick Yes to open the game update page.",
 		"SRB2 Livesplit Script",
 		MessageBoxButtons.YesNo,
