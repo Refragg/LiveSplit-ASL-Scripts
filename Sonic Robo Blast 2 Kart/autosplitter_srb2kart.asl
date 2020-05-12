@@ -91,6 +91,16 @@ state("srb2kart", "1.1 - mservfix 32 bits")
 	int inGame : 0x326C10;
 }
 
+state("srb2kart", "1.2")
+{
+	int start_RA : 0x14EBF8C;
+	int frameCounter_track : 0x14D5164;
+	int lap : 0x14D5168;
+	int laps_total : 0x1C1CF4;
+	int level : 0x1C4E88;
+	int inGame : 0x374920;
+}
+
 init
 {
 	if (modules.First().ModuleMemorySize == 22675456) version = "1.1 - 32 bits";
@@ -102,13 +112,14 @@ init
 	if (modules.First().ModuleMemorySize == 22917120) version = "1.1 - mservfix 64 bits";
 	if (modules.First().ModuleMemorySize == 22732800) version = "1.1 - Shaders 32 bits";
 	if (modules.First().ModuleMemorySize == 22372352) version = "1.1 - mservfix 32 bits";
+	if (modules.First().ModuleMemorySize == 23191552) version = "1.2";
 
 	else if(version == "")
 	{
 		var result = MessageBox.Show(timer.Form,
 		"Your executable is not supported by this script version\n"
 		+ "Also make sure your executable name is srb2kart.exe\n"
-		+ "This script version works with vanilla V1.0.1, V1.0.4, V1.1 and some modded exes\n"
+		+ "This script version works with vanilla V1.0.1, V1.0.4, V1.1, V1.2 and some modded exes\n"
 		+ "\nClick OK if you want to open the README webpage",
 		"SRB2Kart Livesplit Script",
 		MessageBoxButtons.OKCancel,
