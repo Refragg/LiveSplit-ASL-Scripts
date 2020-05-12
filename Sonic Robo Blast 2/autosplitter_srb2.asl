@@ -40,7 +40,7 @@ state("srb2win", "2.1.25 - 32 bits")
 	int isWatching : 0x13861E4;
 }
 
-state("srb2win", "2.2.3")
+state("srb2win", "2.2.3 / 2.2.4")
 {
 	int start : 0x44559A8;
 	int split : 0x3EC180;
@@ -61,9 +61,9 @@ init
 {
 	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.25 - 64 bits";
 	if (modules.First().ModuleMemorySize == 21602304) version = "2.1.25 - 32 bits";
-	if (modules.First().ModuleMemorySize == 99020800) version = "2.2.3";
+	if (modules.First().ModuleMemorySize == 99020800) version = "2.2.3 / 2.2.4";
 
-	if(version == "2.2.3")
+	if(version == "2.2.3 / 2.2.4")
 	{
 		vars.branch = 2;
 	}
