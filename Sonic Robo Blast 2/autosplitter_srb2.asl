@@ -168,26 +168,6 @@ update
 
 	if(vars.branch == 1)
 	{
-		if (current.mod_id == "SUBARASHII" && current.level == 101)
-		{
-			if (settings["finnish"] && current.exitCountdown < 99 && current.exitCountdown != old.exitCountdown && vars.sugoUndo == 0)
-			{
-				vars.timerModel.UndoSplit();
-				vars.sugoUndo = 1;
-			}
-			if (settings["a_clear"] && current.exitCountdown == 1 && old.exitCountdown == 1 && vars.sugoUndo == 0)
-			{
-				vars.timerModel.UndoSplit();
-				vars.sugoUndo = 1;
-			}
-		}
-
-		if (current.mod_id == "SUBARASHII" && current.level == 100)
-		{
-			vars.sugoUndo = 0;
-		}
-
-
 		if (current.mod_id == "KIMOKAWAII" && current.level == 1035)
 		{
 			if (settings["finnish"] && current.exitCountdown < 99 && current.exitCountdown != old.exitCountdown && vars.sugoUndo == 0)
@@ -232,6 +212,10 @@ split
 {
 	if (vars.branch == 1)
 	{
+		if(current.mod_id == "SUBARASHII" && current.level == 101)
+		{
+			return false;
+		}
 		if(settings["sugo_WSplit"])
 		{
 			if((current.mod_id == "SUGOI V1.2" || current.mod_id == "SUBARASHII" || current.mod_id == "KIMOKAWAII") && old.level == 100 && current.level != old.level)
