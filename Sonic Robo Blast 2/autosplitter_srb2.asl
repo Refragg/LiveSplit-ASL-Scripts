@@ -12,7 +12,6 @@ state("srb2win", "2.1.25 - 64 bits")
 	int LBonus : 0x388330;
 	int TA : 0x37B658;
 	int reset : 0x13D5DC8;
-	int emblem : 0x23E3E4;
 	int emerald : 0x13D1C8C;
 	string10 mod_id : 0x37B680;
 	byte scr_temple : 0x387D9A;
@@ -32,7 +31,6 @@ state("srb2win", "2.1.25 - 32 bits")
 	int LBonus : 0x340CF0;
 	int TA : 0x334A4C;
 	int reset : 0x138959C;
-	int emblem : 0x1FDE28;
 	int emerald : 0x1385CA0;
 	string10 mod_id : 0x334A80;
 	byte scr_temple : 0x34077A;
@@ -52,7 +50,6 @@ state("srb2win", "2.2.3 / 2.2.4")
 	int LBonus : 0x3EC230;
 	int TA : 0x3E020C;
 	int emerald : 0x5540C80;
-	string4 music : 0x4450194;
 	int file : 0x2323C4;
 	int isWatching : 0x5540C44;
 }
@@ -111,11 +108,9 @@ startup
 	settings.Add("a_clear", false, "Act clear appears", "split");
 	settings.Add("s_b_clear", false, "Bonuses clear", "split");
 	settings.Add("loading", false, "Next level Loading", "split");
-	settings.Add("CEZR", false, "(2.2 only) Split at the bridge falling section of CEZ1");
 	settings.Add("emerald", false, "Split on emerald tokens");
+	settings.Add("emblem2", false, "Split on emblems using an external program (hover here please)");
 	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
-	settings.Add("emblem", false, "(2.1 only) Split on emblems (hover here please)");
-	settings.Add("emblem2", false, "(2.2 only) Split on emblems using an external program (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
 	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1/2/3) Teleport Station split");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
@@ -124,8 +119,7 @@ startup
 	settings.SetToolTip("s_b_clear", "Splits when your bonuses got added to the total");
 	settings.SetToolTip("loading","Splits when the transition to the next level begins");
 	settings.SetToolTip("resetS","Disabled by default to avoid accidental timer resets");
-	settings.SetToolTip("emblem","Splits on hidden emblems, not on the record attack ones. At every restart of the game, you'll need to take one first emblem then it'll start to split");
-	settings.SetToolTip("emblem2","Splits on hidden emblems, not on the record attack ones. You need to use Ors emblem display program in order to work");
+	settings.SetToolTip("emblem2","Splits on hidden emblems, not on the record attack ones. You need to use Ors emblem display program and put the output to (Livesplit Path)\\Components\\SRB2 Emblems.txt in order to work");
 	settings.SetToolTip("temple","Splits when activating a temple");
 	settings.SetToolTip("sugo_WSplit","Splits when you warp into a level from the Teleport Station");
 }
@@ -187,7 +181,7 @@ update
 		}
 
 	}
-	if (vars.branch == 2 && settings["emblem2"])
+	if (settings["emblem2"])
 	{
 		vars.splitDelay = Math.Max(0, vars.splitDelay-1);
 		if(File.Exists("Components\\SRB2 Emblems.txt"))
@@ -237,10 +231,6 @@ split
 		{
 			return true;
 		}
-		if(settings["emblem"] && current.emblem == -1 && old.emblem == -2)
-		{
-			return true;
-		}
 
 		if ((current.mod_id == "" && current.level == 25) || (current.mod_id == "4.6" && current.level == 122 || current.level == 134))
 		{
@@ -273,10 +263,6 @@ split
 
 	if (vars.branch == 2)
 	{
-		if(settings["CEZR"] && current.music == "CEZR" && current.music != old.music)
-		{
-			return true;
-		}
 		if(settings["loading"] && current.exitCountdown == 0 && old.exitCountdown > 0 && old.level >= 50 && old.level <= 73)
 		{
 			return true;
@@ -308,16 +294,16 @@ split
 				return true;
 			}
 		}
-		if(settings["emblem2"])
-		{
-			if (vars.ESplit == 1 && current.framecounter != old.framecounter)
-			{
-				vars.ESplit = 0;
-				return true;
-			}
-		}
 	}
 
+	if(settings["emblem2"])
+	{
+		if (vars.ESplit == 1 && current.framecounter != old.framecounter)
+		{
+			vars.ESplit = 0;
+			return true;
+		}
+	}
 	if(settings["s_b_clear"] && current.LBonus == 0 && old.LBonus != 0)
 	{
 		return true;
