@@ -206,13 +206,17 @@ split
 		{
 			return true;
 		}
+		if(current.mod_id == "KIMOKAWAII" && current.level == 52 && current.split == 1 && old.split == 0)
+		{
+			return true;
+		}
 
 		if(settings["temple"] && current.mod_id == "4.6" && current.scr_temple != old.scr_temple && current.scr_temple > 1)
 		{
 			return true;
 		}
 
-		if(settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 57)
+		if(current.mod_id == "" && settings["loading"] && current.level != old.level && old.level >= 50 && old.level <= 57)
 		{
 			return true;
 		}
