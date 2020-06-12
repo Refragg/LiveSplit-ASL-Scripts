@@ -206,7 +206,7 @@ split
 		{
 			return true;
 		}
-		if(current.mod_id == "KIMOKAWAII" && current.level == 52 && current.split == 1 && old.split == 0)
+		if(settings["a_clear"] && current.mod_id == "KIMOKAWAII" && current.level == 52 && current.split == 1 && old.split == 0)
 		{
 			return true;
 		}
