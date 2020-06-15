@@ -168,7 +168,7 @@ update
 			if (vars.line != vars.prevLine)
 			{
 				vars.ESplit = 1;
-				vars.splitDelay = 10;
+				vars.splitDelay = 1;
 			}
 			vars.prevLine = vars.line;
 			if (vars.splitDelay == 0)
@@ -287,7 +287,7 @@ split
 
 	if(settings["emblem2"])
 	{
-		if (vars.ESplit == 1 && current.framecounter != old.framecounter)
+		if (vars.ESplit == 1 && current.exitCountdown == 0)
 		{
 			vars.ESplit = 0;
 			return true;
