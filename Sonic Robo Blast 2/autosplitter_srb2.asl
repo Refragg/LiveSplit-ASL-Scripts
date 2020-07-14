@@ -44,6 +44,7 @@ state("srb2win", "2.2.6")
 	int split : 0x43DB40;
 	int level : 0x23A3E4;
 	int framecounter : 0x55CDB0C;
+	int mframecounter : 0x55CDBE0;
 	int exitCountdown : 0x55CDAE8;
 	int TBonus : 0x43DBD0;
 	int RBonus : 0x43DBE4;
@@ -113,6 +114,7 @@ startup
 	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
 	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1/2/3) Teleport Station split");
+	settings.Add("igtmode", false, "Marathon Mode Style IGT (beta)");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
 	settings.SetToolTip("a_clear","Splits when the act clear screen appears");
@@ -122,6 +124,7 @@ startup
 	settings.SetToolTip("emblem2","Splits on hidden emblems, not on the record attack ones. You need to use Ors emblem display program and put the output to (Livesplit Path)\\Components\\SRB2 Emblems.txt in order to work");
 	settings.SetToolTip("temple","Splits when activating a temple");
 	settings.SetToolTip("sugo_WSplit","Splits when you warp into a level from the Teleport Station");
+	settings.SetToolTip("igtmode","If unchecked, the standard Level IGT will be used");
 }
 
 start
@@ -148,10 +151,22 @@ update
 {
 	//print("Executable size is : " + modules.First().ModuleMemorySize);
 	//print("vars.branch = " + vars.branch);
-	int timeToAdd = Math.Max(0, current.framecounter-old.framecounter);
-	if(current.framecounter-old.framecounter < 15)
+	if(settings["igtmode"])
 	{
+		int timeToAdd = Math.Max(0, current.mframecounter-old.mframecounter);
 		vars.totalTime += timeToAdd;
+		if (current.exitCountdown != 0 && old.exitCountdown == 0)
+		{
+			vars.totalTime += 1;
+		}
+	}
+	else
+	{
+		int timeToAdd = Math.Max(0, current.framecounter-old.framecounter);
+		if(current.framecounter-old.framecounter < 15)
+		{
+			vars.totalTime += timeToAdd;
+		}
 	}
 
 	if(current.split == 0 && vars.OSplit == 1)
