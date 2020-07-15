@@ -1,5 +1,3 @@
-/*I have a very basic knowledge about C# and ASL in general so this splitter is pretty basic and probably shouldn't be taken as an example.*/
-
 state("srb2win", "2.1.25 - 64 bits")
 {
 	int start : 0x13DFDC8;
@@ -44,14 +42,15 @@ state("srb2win", "2.2.6")
 	int split : 0x43DB40;
 	int level : 0x23A3E4;
 	int framecounter : 0x55CDB0C;
-	int mframecounter : 0x55CDBE0;
+	int msframecounter : 0x55CDBE0;
+	int mframecounter : 0x431BD8;
 	int exitCountdown : 0x55CDAE8;
 	int TBonus : 0x43DBD0;
 	int RBonus : 0x43DBE4;
 	int LBonus : 0x43DBF0;
 	int TA : 0x431BCC;
 	int emerald : 0x55CCEE0;
-	int file : 0x23A404;
+	string4 music : 0x44A1BE4;
 	int isWatching : 0x55CCEA4;
 	int isPlaying : 0x3FD354;
 }
@@ -111,7 +110,6 @@ startup
 	settings.Add("loading", false, "Next level Loading", "split");
 	settings.Add("emerald", false, "Split on emerald tokens");
 	settings.Add("emblem2", false, "Split on emblems using an external program (hover here please)");
-	settings.Add("resetS", false, "(2.2 only) Reset even if playing on a file");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
 	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1/2/3) Teleport Station split");
 	settings.Add("igtmode", false, "Marathon Mode Style IGT (beta)");
@@ -120,7 +118,6 @@ startup
 	settings.SetToolTip("a_clear","Splits when the act clear screen appears");
 	settings.SetToolTip("s_b_clear", "Splits when your bonuses got added to the total");
 	settings.SetToolTip("loading","Splits when the transition to the next level begins");
-	settings.SetToolTip("resetS","Disabled by default to avoid accidental timer resets");
 	settings.SetToolTip("emblem2","Splits on hidden emblems, not on the record attack ones. You need to use Ors emblem display program and put the output to (Livesplit Path)\\Components\\SRB2 Emblems.txt in order to work");
 	settings.SetToolTip("temple","Splits when activating a temple");
 	settings.SetToolTip("sugo_WSplit","Splits when you warp into a level from the Teleport Station");
@@ -136,6 +133,13 @@ start
 	vars.totalTime = 0;
 	if(current.isWatching == 0)
 	{
+		if(vars.branch == 2)
+		{
+			if(old.mframecounter != 0 && current.mframecounter == 0)
+			{
+				return true;
+			}
+		}
 		if(settings["TA_S"])
 		{
 			return (current.start == 1 && current.start != old.start);
@@ -153,9 +157,19 @@ update
 	//print("vars.branch = " + vars.branch);
 	if(settings["igtmode"])
 	{
-		int timeToAdd = Math.Max(0, current.mframecounter-old.mframecounter);
-		vars.totalTime += timeToAdd;
-		if (current.exitCountdown != 0 && old.exitCountdown == 0)
+		int timeToAdd = Math.Max(0, current.msframecounter-old.msframecounter);
+		if(current.level == 1)
+		{
+			if(current.framecounter != 0)
+			{
+				vars.totalTime += timeToAdd;
+			}
+		}
+		else
+		{
+			vars.totalTime += timeToAdd;
+		}
+		if ((current.exitCountdown != 0 && old.exitCountdown == 0) || (current.music == "_con" && old.music != "_con"))
 		{
 			vars.totalTime += 1;
 		}
@@ -325,13 +339,13 @@ reset
 	{
 		return true;
 	}
-	if(vars.branch == 2 && current.isPlaying == 0 && current.isPlaying != old.isPlaying)
+	if(vars.branch == 2)
 	{
-		if (settings["resetS"])
+		if(current.isPlaying == 0 && current.isPlaying != old.isPlaying)
 		{
 			return true;
 		}
-		else if (current.file == 0)
+		if(old.mframecounter != 0 && current.mframecounter == 0)
 		{
 			return true;
 		}
