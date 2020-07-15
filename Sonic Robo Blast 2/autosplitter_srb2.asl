@@ -169,9 +169,18 @@ update
 		{
 			vars.totalTime += timeToAdd;
 		}
-		if ((current.exitCountdown != 0 && old.exitCountdown == 0) || (current.music == "_con" && old.music != "_con"))
+
+		if(current.music == "_con" && old.music != "_con")
 		{
 			vars.totalTime += 1;
+		}
+
+		if(current.level != 25 || current.level != 26)
+		{
+			if (current.exitCountdown != 0 && old.exitCountdown == 0)
+			{
+				vars.totalTime += 1;
+			}
 		}
 	}
 	else
