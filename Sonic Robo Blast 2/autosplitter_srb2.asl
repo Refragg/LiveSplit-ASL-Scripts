@@ -40,7 +40,7 @@ state("srb2win", "2.2.6")
 {
 	int start : 0x44A7408;
 	int split : 0x43DB40;
-	int level : 0x23A3E4;
+	int level : 0x24CCD4;
 	int framecounter : 0x55CDB0C;
 	int msframecounter : 0x55CDBE0;
 	int mframecounter : 0x431BD8;
