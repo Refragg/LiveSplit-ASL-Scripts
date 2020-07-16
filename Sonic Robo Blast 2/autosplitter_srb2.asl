@@ -175,7 +175,7 @@ update
 			vars.totalTime += 1;
 		}
 
-		if(current.level != 25 || current.level != 26)
+		if(current.level != 25 && current.level != 26)
 		{
 			if (current.exitCountdown != 0 && old.exitCountdown == 0)
 			{
@@ -291,10 +291,6 @@ split
 
 	if (vars.branch == 2)
 	{
-		if(settings["loading"] && current.exitCountdown == 0 && old.exitCountdown > 0 && old.level >= 50 && old.level <= 73)
-		{
-			return true;
-		}
 		if(current.level == 25 || current.level == 26 || current.level == 27)
 		{
 			if(old.exitCountdown > 1 && current.exitCountdown <= 1)
@@ -317,7 +313,7 @@ split
 				vars.OSplit = 1;
 				return true;
 			}
-			if(settings["loading"] && current.split == 0 && old.split == 1)
+			if(settings["loading"] && current.split == 0 && (old.split == 1 || old.split == 5))
 			{
 				return true;
 			}
