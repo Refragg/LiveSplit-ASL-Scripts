@@ -112,7 +112,7 @@ startup
 	settings.Add("emblem2", false, "Split on emblems using an external program (hover here please)");
 	settings.Add("temple", false, "(2.1 only) (Mystic Realm) Temple split");
 	settings.Add("sugo_WSplit", false, "(2.1 only) (SUGOI 1/2/3) Teleport Station split");
-	settings.Add("igtmode", false, "Marathon Mode Style IGT (beta)");
+	settings.Add("igtmode", false, "(2.2 only) Marathon Mode Style IGT");
 	settings.SetToolTip("split","You shouldn't choose more than 1 split timiing");
 	settings.SetToolTip("finnish","Splits when you cross the finish sign");
 	settings.SetToolTip("a_clear","Splits when the act clear screen appears");
@@ -155,7 +155,7 @@ update
 {
 	//print("Executable size is : " + modules.First().ModuleMemorySize);
 	//print("vars.branch = " + vars.branch);
-	if(settings["igtmode"])
+	if(vars.branch == 2 && settings["igtmode"])
 	{
 		int timeToAdd = Math.Max(0, current.msframecounter-old.msframecounter);
 		if(current.level == 1)
