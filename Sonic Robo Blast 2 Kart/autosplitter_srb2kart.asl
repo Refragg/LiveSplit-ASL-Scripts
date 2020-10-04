@@ -1,6 +1,3 @@
-/* SRB2Kart works approximately the same as SRB2 although it's an other executable so some things comes from SRB2's splitter.
-I have a very basic knowledge about C# and ASL in general so this splitter is pretty basic and probably shouldn't be taken as an example.*/
-
 state("srb2kart", "1.1 - 32 bits")
 {
 	int start_RA : 0x14BF9AC;
@@ -101,6 +98,16 @@ state("srb2kart", "1.2")
 	int inGame : 0x374920;
 }
 
+state("srb2kart", "1.3")
+{
+	int start_RA : 0x1506B8C;
+	int frameCounter_track : 0x14EFCE4;
+	int lap : 0x14EFCE8;
+	int laps_total : 0x1C5D34;
+	int level : 0x1C8EC8;
+	int inGame : 0x378494;
+}
+
 init
 {
 	if (modules.First().ModuleMemorySize == 22675456) version = "1.1 - 32 bits";
@@ -113,16 +120,17 @@ init
 	if (modules.First().ModuleMemorySize == 22732800) version = "1.1 - Shaders 32 bits";
 	if (modules.First().ModuleMemorySize == 22372352) version = "1.1 - mservfix 32 bits";
 	if (modules.First().ModuleMemorySize == 23191552) version = "1.2";
+	if (modules.First().ModuleMemorySize == 23298048) version = "1.3";
 
 	else if(version == "")
 	{
 		var result = MessageBox.Show(timer.Form,
 		"Your executable is not supported by this script version\n"
 		+ "Also make sure your executable name is srb2kart.exe\n"
-		+ "This script version works with vanilla V1.0.1, V1.0.4, V1.1, V1.2 and some modded exes\n"
+		+ "This script version works with vanilla V1.0.1, V1.0.4, V1.1, V1.2, V1.3 and some modded exes (for 1.1)\n"
 		+ "\nClick OK if you want to open the README webpage",
 		"SRB2Kart Livesplit Script",
-		MessageBoxButtons.OKCancel,
+		MessageBoxButtons.YesNo,
 		MessageBoxIcon.Information);
 		if (result == DialogResult.OK)
 		{

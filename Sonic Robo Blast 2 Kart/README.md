@@ -2,7 +2,7 @@
 
 This autosplitter is for **SRB2Kart**  
 While it's a separate executable from SRB2, it works approximately like SRB2 which is really convenient.  
-It is made to work with 1.0.1, 1.0.4, 1.1 and 1.2
+It is made to work with 1.0.1, 1.0.4, 1.1, 1.2 and 1.3
 This splitter has **settings** so that you can control what it do and when.
 
 Feel free to leave any suggestion to improve this script!
@@ -20,7 +20,7 @@ Feel free to leave any suggestion to improve this script!
 
 **Make sure** that your executable name is **srb2kart.exe** then in Livesplit, go to Edit Splits and click Activate.  
 
-- **With a modded executable :**
+- **With a modded executable (FOR 1.1 ONLY) :**
 
 As this splitter is currently exe dependent there's only **a few ones that works**  
 You can find them in the "[Modded executables](https://github.com/R3FR4G/LiveSplit-ASL-Scripts/tree/master/Sonic%20Robo%20Blast%202%20Kart/Modded%20executables)" folder and then you want to follow the same steps as for the vanilla exe  
