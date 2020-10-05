@@ -36,32 +36,32 @@ state("srb2win", "2.1.25 - 32 bits")
 	int isWatching : 0x13861E4;
 }
 
-state("srb2win", "2.2.7")
+state("srb2win", "2.2.8")
 {
-	int start : 0x4E71228;
-	int split : 0x4C2AC0;
-	int level : 0x258D54;
-	int framecounter : 0x4B112C;
-	int msframecounter : 0x4B1200;
-	int mframecounter : 0x4B5248;
-	int exitCountdown : 0x4B1108;
-	int TBonus : 0x4C2B50;
-	int RBonus : 0x4C2B64;
-	int LBonus : 0x4C2B70;
-	int TA : 0x4B5238;
-	int emerald : 0x4AF824;
-	string4 music : 0x4E5F608;
-	int isWatching : 0x4ACBB8;
-	int isPlaying : 0x46FC64;
+	int start : 0x44B6A48;
+	int split : 0x40D2A0;
+	int level : 0x24CD14;
+	int framecounter : 0x55EC9CC;
+	int msframecounter : 0x55ECAA0;
+	int mframecounter : 0x401338;
+	int exitCountdown : 0x55EC9A8;
+	int TBonus : 0x40D330;
+	int RBonus : 0x40D344;
+	int LBonus : 0x40D350;
+	int TA : 0x40132C;
+	int emerald : 0x55EBDA0;
+	string4 music : 0x44B1AFC;
+	int isWatching : 0x55EBD64;
+	int isPlaying : 0x3C8414;
 }
 
 init
 {
 	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.25 - 64 bits";
 	if (modules.First().ModuleMemorySize == 21602304) version = "2.1.25 - 32 bits";
-	if (modules.First().ModuleMemorySize == 100208640) version = "2.2.7";
+	if (modules.First().ModuleMemorySize == 99930112) version = "2.2.8";
 
-	if(version == "2.2.7")
+	if(version == "2.2.8")
 	{
 		vars.branch = 2;
 	}
@@ -79,7 +79,7 @@ init
 		var result = MessageBox.Show(timer.Form,
 		"Your game version is not supported by this script version\n"
 		+ "You have to use the good version of the game\n"
-		+ "This script version works with SRB2 V2.1.25 and V2.2.7\n"
+		+ "This script version works with SRB2 V2.1.25 and V2.2.8\n"
 		+ "\nClick Yes to open the game update page.",
 		"SRB2 Livesplit Script",
 		MessageBoxButtons.YesNo,
