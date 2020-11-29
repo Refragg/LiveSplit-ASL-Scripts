@@ -50,6 +50,7 @@ state("srb2win", "2.2.8")
 	int LBonus : 0x40D350;
 	int TA : 0x40132C;
 	int emerald : 0x55EBDA0;
+	string13 mod_id : 0x401360;
 	string4 music : 0x44B1AFC;
 	int isWatching : 0x55EBD64;
 	int isPlaying : 0x3C8414;
@@ -291,6 +292,13 @@ split
 
 	if (vars.branch == 2)
 	{
+		if(current.mod_id == "CYDM")
+		{
+			if(current.level == 239)
+			{
+				return old.exitCountdown != 1 && current.exitCountdown == 1;
+			}
+		}
 		if(current.level == 25 || current.level == 26 || current.level == 27)
 		{
 			if(old.exitCountdown > 1 && current.exitCountdown <= 1)
