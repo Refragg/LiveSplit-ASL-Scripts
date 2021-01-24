@@ -299,7 +299,7 @@ split
 				return old.exitCountdown != 1 && current.exitCountdown == 1;
 			}
 		}
-		if(current.level == 25 || current.level == 26 || current.level == 27)
+		if(old.level == 25 || old.level == 26 || old.level == 27)
 		{
 			if(old.exitCountdown > 1 && current.exitCountdown <= 1)
 			{
