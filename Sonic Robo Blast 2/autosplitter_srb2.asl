@@ -51,7 +51,7 @@ state("srb2win", "2.2.8")
 	int TA : 0x40132C;
 	int emerald : 0x55EBDA0;
 	string13 mod_id : 0x401360;
-	string4 music : 0x44B1AFC;
+	string8 music : 0x44B1AFC;
 	int isWatching : 0x55EBD64;
 	int isPlaying : 0x3C8414;
 }
@@ -292,9 +292,9 @@ split
 
 	if (vars.branch == 2)
 	{
-		if(current.mod_id == "CYDM")
+		if(current.mod_id == "CDR V1.5")
 		{
-			if(current.level == 239)
+			if(current.level == 234)
 			{
 				return old.exitCountdown != 1 && current.exitCountdown == 1;
 			}
