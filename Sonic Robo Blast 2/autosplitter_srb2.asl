@@ -320,7 +320,7 @@ split
 				return old.exitCountdown != 1 && current.exitCountdown == 1;
 			}
 		}
-		if(old.level == 25 || old.level == 26 || old.level == 27)
+		if(current.mod_id == "" && old.level == 25 || old.level == 26 || old.level == 27)
 		{
 			if(old.exitCountdown > 1 && current.exitCountdown <= 1)
 			{
@@ -357,7 +357,7 @@ split
 			return true;
 		}
 	}
-	if(settings["s_b_clear"] && current.LBonus == 0 && old.LBonus != 0)
+	if(settings["s_b_clear"] && current.mod_id == "" && (current.level >= 50 && current.level <= 57) || (current.level >= 70 && current.level <= 73) && current.LBonus == 0 && old.LBonus != 0)
 	{
 		return true;
 	}
