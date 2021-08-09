@@ -124,7 +124,7 @@ startup
 	vars.line = "";
 	vars.prevLine = "";
 	vars.ESplit = 0;
-	settings.Add("TA_S", true, "Start on Record Attack");
+	settings.Add("TA_S", false, "Start on Record Attack");
 	settings.Add("split", true, "Split time");
 	settings.Add("finnish", false, "Finish sign", "split");
 	settings.Add("a_clear", false, "Act clear appears", "split");
