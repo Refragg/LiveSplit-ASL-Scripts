@@ -76,14 +76,35 @@ state("srb2win", "2.2.10")
 	int isPlaying : 0x5D7020;
 }
 
+state("srb2win", "2.2.11")
+{
+	int start : 0x45B2EC;
+	int split : 0x615120;
+	int level : 0x29B9D4;
+	int framecounter : 0x603158;
+	int msframecounter : 0x60324C;
+	int mframecounter : 0x6077E8;
+	int exitCountdown : 0x603134;
+	int TBonus : 0x6151B0;
+	int RBonus : 0x6151C4;
+	int LBonus : 0x6151DC;
+	int TA : 0x6077D8;
+	int emerald : 0x601844;
+	string13 mod_id : 0x607820;
+	string8 music : 0x504C0A8; 
+	int isWatching : 0x2837C0;
+	int isPlaying : 0x5C8AA0;
+}
+
 init
 {
 	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.25 - 64 bits";
 	if (modules.First().ModuleMemorySize == 21602304) version = "2.1.25 - 32 bits";
 	if (modules.First().ModuleMemorySize == 99930112) version = "2.2.8";
 	if (modules.First().ModuleMemorySize == 84541440) version = "2.2.10";
+	if (modules.First().ModuleMemorySize == 84672512) version = "2.2.11";
 
-	if(version == "2.2.8" || version == "2.2.10")
+	if(version == "2.2.8" || version == "2.2.10" || version == "2.2.11")
 	{
 		vars.branch = 2;
 	}
@@ -101,7 +122,7 @@ init
 		var result = MessageBox.Show(timer.Form,
 		"Your game version is not supported by this script version\n"
 		+ "You have to use the good version of the game\n"
-		+ "This script version works with SRB2 V2.1.25 and V2.2.8/2.2.10\n"
+		+ "This script version works with SRB2 V2.1.25 and V2.2.8/2.2.10/2.2.11\n"
 		+ "\nClick Yes to open the game update page.",
 		"SRB2 Livesplit Script",
 		MessageBoxButtons.YesNo,
