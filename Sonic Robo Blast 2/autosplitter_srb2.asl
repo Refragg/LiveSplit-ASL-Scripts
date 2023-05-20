@@ -357,7 +357,7 @@ split
 			return true;
 		}
 	}
-	if(settings["s_b_clear"] && current.mod_id == "" && (current.level >= 50 && current.level <= 57) || (current.level >= 70 && current.level <= 73) && current.LBonus == 0 && old.LBonus != 0)
+	if(settings["s_b_clear"] && current.mod_id == "" && ((current.level >= 50 && current.level <= 57) || (current.level >= 70 && current.level <= 73)) && current.LBonus == 0 && old.LBonus != 0)
 	{
 		return true;
 	}
