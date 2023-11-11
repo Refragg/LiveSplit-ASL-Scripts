@@ -96,6 +96,26 @@ state("srb2win", "2.2.11")
 	int isPlaying : 0x5C8AA0;
 }
 
+state("srb2win", "2.2.13")
+{
+	int start : 0x46B2F0;
+	int split : 0x622CC0;
+	int level : 0x2A6FF4;
+	int framecounter : 0x610C7C;
+	int msframecounter : 0x610D70;
+	int mframecounter : 0x61538C;
+	int exitCountdown : 0x610C58;
+	int TBonus : 0x622D50;
+	int RBonus : 0x622D64;
+	int LBonus : 0x622D7C;
+	int TA : 0x615378;
+	int emerald : 0x60F378;
+	string13 mod_id : 0x6153C0;
+	string8 music : 0x4E245E8; 
+	int isWatching : 0x28FFE0;
+	int isPlaying : 0x5D8AA0;
+}
+
 init
 {
 	if (modules.First().ModuleMemorySize == 22024192) version = "2.1.25 - 64 bits";
@@ -103,8 +123,9 @@ init
 	if (modules.First().ModuleMemorySize == 99930112) version = "2.2.8";
 	if (modules.First().ModuleMemorySize == 84541440) version = "2.2.10";
 	if (modules.First().ModuleMemorySize == 84672512) version = "2.2.11";
+	if (modules.First().ModuleMemorySize == 82452480) version = "2.2.13";
 
-	if(version == "2.2.8" || version == "2.2.10" || version == "2.2.11")
+	if(version == "2.2.8" || version == "2.2.10" || version == "2.2.11" || version == "2.2.13")
 	{
 		vars.branch = 2;
 	}
